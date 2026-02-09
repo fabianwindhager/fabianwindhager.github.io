@@ -135,10 +135,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link active" href="./01_basics.html" aria-current="page"> 
 <span class="menu-text">1. R-Basics</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./test.html"> 
-<span class="menu-text">test</span></a>
-  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -165,6 +161,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#datentypen" id="toc-datentypen" class="nav-link" data-scroll-target="#datentypen">1.6. Datentypen</a></li>
   <li><a href="#dataframes" id="toc-dataframes" class="nav-link" data-scroll-target="#dataframes">1.7. Dataframes</a></li>
   <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">1.8. Packages</a></li>
+  </ul></li>
+  <li><a href="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" id="toc-bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" class="nav-link" data-scroll-target="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten">2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -306,6 +306,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Das Tidyverse ist eine Sammlung aufeinander abgestimmter R-Pakete, die eine einheitliche und leicht verständliche Grammatik zum Importieren, Aufräumen, Transformieren und Visualisieren von Daten bereitstellen (im Gegensatz zu base-R).</p>
 <p>Bei Error “Kein package namens…” -&gt; vergessen das Package mit <code>library()</code> zu laden.</p>
 <p>Beispiele für wichtige und häufig verwendete Packages aus dem Tidyverse-Bundle sind <code>ggplot</code> (Visualisierung) <code>dplyr</code> (Data Manipulation, filter, select, summarize), <code>tidyr</code> (data reshaping) oder <code>readr</code> (schneller daten import)</p>
+</section>
+</section>
+<section id="bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" class="level2">
+<h2 class="anchored" data-anchor-id="bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten">2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten</h2>
+<p>Im Kurs “Quantitative Geographien” arbeiten wir mit <code>.csv</code> und <code>.shp</code> files.</p>
+<p>Zuerst importieren wir einen Datensatz mit den jährlichen Bevölkerungszahlen im Jahresmittel von 2002-2023. (bereitgestellt auf Lernplattform)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Bevölkerungsdaten </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/Bevölkerungsdaten.csv"</span>)  </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Wanderungsdaten </span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>moves <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/Wanderungsdaten.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Um einen ersten Überblick über die Datensätze zu erhalten, können wir die Funktionen head() und str() verwenden.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  jahr gemnr   pop
+1 2002 10101 11644
+2 2003 10101 11699
+3 2004 10101 11799
+4 2005 10101 12045
+5 2006 10101 12171
+6 2007 10101 12350</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   50736 obs. of  3 variables:
+ $ jahr : int  2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 ...
+ $ gemnr: int  10101 10101 10101 10101 10101 10101 10101 10101 10101 10101 ...
+ $ pop  : int  11644 11699 11799 12045 12171 12350 12549 12717 12816 12950 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pop)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "jahr"  "gemnr" "pop"  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(moves) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gemnr jahr bi_zu bi_weg au_zu au_weg
+1 10101 2002   870    763    92    127
+2 10101 2003  1192   1120   145    101
+3 10101 2004  1294   1088   141    122
+4 10101 2005  1121   1027   134     81
+5 10101 2006  1304   1112   116    123
+6 10101 2007  1363   1210   224    163</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(moves) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   46497 obs. of  6 variables:
+ $ gemnr : int  10101 10101 10101 10101 10101 10101 10101 10101 10101 10101 ...
+ $ jahr  : int  2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 ...
+ $ bi_zu : int  870 1192 1294 1121 1304 1363 1354 1297 1235 1338 ...
+ $ bi_weg: int  763 1120 1088 1027 1112 1210 1173 1227 1160 1234 ...
+ $ au_zu : int  92 145 141 134 116 224 259 282 288 313 ...
+ $ au_weg: int  127 101 122 81 123 163 260 226 208 245 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(moves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "gemnr"  "jahr"   "bi_zu"  "bi_weg" "au_zu"  "au_weg"</code></pre>
+</div>
+</div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
 
 
 </section>

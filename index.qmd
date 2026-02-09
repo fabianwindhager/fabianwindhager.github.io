@@ -1,5 +1,5 @@
 ---
-title: "quantitative_geographie_webpage"
+title: "Quantitative Geographie"
 ---
 
 This is a Quarto website.

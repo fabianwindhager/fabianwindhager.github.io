@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Quantitative Geographie",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "01_basics.html",
@@ -21,10 +21,17 @@
     "text": "R ist eine kostenlose Open-Source-Programmiersprache, die für Datenanalyse, Statistik und Visualisierung entwickelt wurde.\n\n\n\nRStudio ist eine integrierte Entwicklungsumgebung (IDE) für R, die eine benutzerfreundliche Oberfläche zum Schreiben von Code, Verwalten von Dateien, Visualisieren von Daten und effizienten Organisieren von Projekten bietet.\n\n\n\n–&gt; “4 Quadranten”\n\n\n\n\nR ist eine objektorientierte Sprache. Alles ist ein Objekt. Eine Zahl, eine Tabelle, ein Diagramm – alles Objekte. Objekte werden mit dem Zuweisungsoperator &lt;- erstellt.\nMit Strg + Enter können wir Code-Zeilen in der Console ausführen.\n\n# Erstelle ein Objekt \"x\" \nx &lt;- 10 \n# Rechne mit dem Objekt \nx + 5\n\n[1] 15\n\n\n\n\n\nEin Vektor ist eine Liste von Dingen. Verwende c() (kombinieren), um eine Liste zu erstellen.\n\nmy_ages &lt;- c(25,24,30,50) \nmy_names &lt;- c(\"Sandra\", \"Paul\", \"Jonas\")\n\nBei der Berechnung eines Vektors wird dies für jedes Element gleichzeitig durchgeführt.\n\nmy_ages + 2\n\n[1] 27 26 32 52\n\n\n\n\n\nR muss wissen, um welche Art von Daten es sich handelt. Mathematische Berechnungen mit einem Wort führen zu einem Error.\n\n\nclass(my_ages) \n\n[1] \"numeric\"\n\nclass(my_names) \n\n[1] \"character\"\n\n# my_names + 5\n\n\n\n\nDies ist die” Excel-Tabelle” von R. Ein Datenrahmen ist zweidimensional: Zeilen (Beobachtungen) und Spalten (Variablen). Hier finden 99 % der Datenanalysen statt.\n\n\ndf &lt;- data.frame(id = c(1,2,3,4,5),   \n                 name = c(\"A\", \"B\", \"C\", \"D\", \"E\"),   \n                 score = c(90, 75, 80, 84, 95) )\n\nDer Dollarzeichen-Operator $ wird verwendet, um eine einzelne Spalte aus einem Datenrahmen auszuwählen. “df$score” bedeutet also: „Gehe zum Datenrahmen „df“ UND wähle die Spalte „score“ aus.\nMit der Funktion mean() können wir Mittelwerte von Vektoren berechnen.\n\ndf$score \n\n[1] 90 75 80 84 95\n\nmean(df$score)\n\n[1] 84.8\n\n\nBenutze str() um eine Zusammenfassung des dataframes auszugeben.\n\nstr(df)\n\n'data.frame':   5 obs. of  3 variables:\n $ id   : num  1 2 3 4 5\n $ name : chr  \"A\" \"B\" \"C\" \"D\" ...\n $ score: num  90 75 80 84 95\n\n\n\n\n\nPackages sind Tools (oder kleine “Software”) die in R für bestimmte Anwendungen geschrieben worden sind. Zum Beispiel wird das Package “ggplot” häufig für Visualisierungen verwendet. Das wichtigste Package-Bundle ist “tidyverse”.\nGenerell können wir Pakete mit install.packages() installieren. Um ein bereits installiertes Paket zu laden und in unserem Skript verwenden zu können benutzen wir library().\n\n#install.packages(\"tidyverse\") \nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   4.0.0     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.0\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nDas Tidyverse ist eine Sammlung aufeinander abgestimmter R-Pakete, die eine einheitliche und leicht verständliche Grammatik zum Importieren, Aufräumen, Transformieren und Visualisieren von Daten bereitstellen (im Gegensatz zu base-R).\nBei Error “Kein package namens…” -&gt; vergessen das Package mit library() zu laden.\nBeispiele für wichtige und häufig verwendete Packages aus dem Tidyverse-Bundle sind ggplot (Visualisierung) dplyr (Data Manipulation, filter, select, summarize), tidyr (data reshaping) oder readr (schneller daten import)"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Quantitative Geographie",
+    "objectID": "01_basics.html#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten",
+    "href": "01_basics.html#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten",
+    "title": "1. R-Basics",
+    "section": "2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten",
+    "text": "2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten\nIm Kurs “Quantitative Geographien” arbeiten wir mit .csv und .shp files.\nZuerst importieren wir einen Datensatz mit den jährlichen Bevölkerungszahlen im Jahresmittel von 2002-2023. (bereitgestellt auf Lernplattform)\n\n# Import Bevölkerungsdaten \npop &lt;- read.csv(\"data/Bevölkerungsdaten.csv\")  \n# Import Wanderungsdaten \nmoves &lt;- read.csv(\"data/Wanderungsdaten.csv\")\n\nUm einen ersten Überblick über die Datensätze zu erhalten, können wir die Funktionen head() und str() verwenden.\n\nhead(pop) \n\n  jahr gemnr   pop\n1 2002 10101 11644\n2 2003 10101 11699\n3 2004 10101 11799\n4 2005 10101 12045\n5 2006 10101 12171\n6 2007 10101 12350\n\nstr(pop) \n\n'data.frame':   50736 obs. of  3 variables:\n $ jahr : int  2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 ...\n $ gemnr: int  10101 10101 10101 10101 10101 10101 10101 10101 10101 10101 ...\n $ pop  : int  11644 11699 11799 12045 12171 12350 12549 12717 12816 12950 ...\n\nnames(pop)  \n\n[1] \"jahr\"  \"gemnr\" \"pop\"  \n\nhead(moves) \n\n  gemnr jahr bi_zu bi_weg au_zu au_weg\n1 10101 2002   870    763    92    127\n2 10101 2003  1192   1120   145    101\n3 10101 2004  1294   1088   141    122\n4 10101 2005  1121   1027   134     81\n5 10101 2006  1304   1112   116    123\n6 10101 2007  1363   1210   224    163\n\nstr(moves) \n\n'data.frame':   46497 obs. of  6 variables:\n $ gemnr : int  10101 10101 10101 10101 10101 10101 10101 10101 10101 10101 ...\n $ jahr  : int  2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 ...\n $ bi_zu : int  870 1192 1294 1121 1304 1363 1354 1297 1235 1338 ...\n $ bi_weg: int  763 1120 1088 1027 1112 1210 1173 1227 1160 1234 ...\n $ au_zu : int  92 145 141 134 116 224 259 282 288 313 ...\n $ au_weg: int  127 101 122 81 123 163 260 226 208 245 ...\n\nnames(moves)\n\n[1] \"gemnr\"  \"jahr\"   \"bi_zu\"  \"bi_weg\" \"au_zu\"  \"au_weg\""
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   }
 ]

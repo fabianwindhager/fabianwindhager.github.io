@@ -3,17 +3,17 @@ project:
   output-dir: docs
 
 website:
-  title: "quantitative_geographie_webpage"
+  title: "Quantitative Geographie: Mobile Gesellschaft"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
-
+        text: Intro
+      - 01_basics.qmd
+      
 format:
   html:
     theme:
-      - cosmo
+      - sandstone
       - brand
     css: styles.css
     toc: true
