@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Quantitative Geographie – Quantitative Geographie: Mobile Gesellschaft</title>
+<title>1. R-Basics – Quantitative Geographie: Mobile Gesellschaft</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,11 +128,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Intro</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./01_basics.html"> 
+    <a class="nav-link active" href="./01_basics.html" aria-current="page"> 
 <span class="menu-text">1. R-Basics</span></a>
   </li>  
   <li class="nav-item">
@@ -150,15 +150,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rrstudio-basics" id="toc-rrstudio-basics" class="nav-link active" data-scroll-target="#rrstudio-basics">1. R/RStudio Basics</a>
+  <ul class="collapse">
+  <li><a href="#was-ist-r" id="toc-was-ist-r" class="nav-link" data-scroll-target="#was-ist-r">1.1. Was ist R?</a></li>
+  <li><a href="#was-ist-rstudio" id="toc-was-ist-rstudio" class="nav-link" data-scroll-target="#was-ist-rstudio">1.2. Was ist RStudio?</a></li>
+  <li><a href="#wie-ist-rstudio-aufgebaut" id="toc-wie-ist-rstudio-aufgebaut" class="nav-link" data-scroll-target="#wie-ist-rstudio-aufgebaut">1.3. Wie ist RStudio aufgebaut?</a></li>
+  <li><a href="#objekte-und-zuweisung" id="toc-objekte-und-zuweisung" class="nav-link" data-scroll-target="#objekte-und-zuweisung">1.4. Objekte und Zuweisung</a></li>
+  <li><a href="#vektoren" id="toc-vektoren" class="nav-link" data-scroll-target="#vektoren">1.5. Vektoren</a></li>
+  <li><a href="#datentypen" id="toc-datentypen" class="nav-link" data-scroll-target="#datentypen">1.6. Datentypen</a></li>
+  <li><a href="#dataframes" id="toc-dataframes" class="nav-link" data-scroll-target="#dataframes">1.7. Dataframes</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">1.8. Packages</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quantitative Geographie</h1>
+<h1 class="title">1. R-Basics</h1>
 </div>
 
 
@@ -175,16 +191,125 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<section id="rrstudio-basics" class="level2">
+<h2 class="anchored" data-anchor-id="rrstudio-basics">1. R/RStudio Basics</h2>
+<section id="was-ist-r" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-r">1.1. Was ist R?</h3>
+<p>R ist eine kostenlose Open-Source-Programmiersprache, die für Datenanalyse, Statistik und Visualisierung entwickelt wurde.</p>
+</section>
+<section id="was-ist-rstudio" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-rstudio">1.2. Was ist RStudio?</h3>
+<p>RStudio ist eine integrierte Entwicklungsumgebung (IDE) für R, die eine benutzerfreundliche Oberfläche zum Schreiben von Code, Verwalten von Dateien, Visualisieren von Daten und effizienten Organisieren von Projekten bietet.</p>
+</section>
+<section id="wie-ist-rstudio-aufgebaut" class="level3">
+<h3 class="anchored" data-anchor-id="wie-ist-rstudio-aufgebaut">1.3. Wie ist RStudio aufgebaut?</h3>
+<p><em>–&gt; “4 Quadranten”</em></p>
+<p><img src="images/Screenshot 2026-02-02 104553.png" class="img-fluid"></p>
+</section>
+<section id="objekte-und-zuweisung" class="level3">
+<h3 class="anchored" data-anchor-id="objekte-und-zuweisung">1.4. Objekte und Zuweisung</h3>
+<p>R ist eine objektorientierte Sprache. Alles ist ein Objekt. Eine Zahl, eine Tabelle, ein Diagramm – alles Objekte. Objekte werden mit dem Zuweisungsoperator &lt;- erstellt.</p>
+<p>Mit <code>Strg + Enter</code> können wir Code-Zeilen in der Console ausführen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Erstelle ein Objekt "x" </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rechne mit dem Objekt </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="dv">5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>[1] 15</code></pre>
 </div>
 </div>
+</section>
+<section id="vektoren" class="level3">
+<h3 class="anchored" data-anchor-id="vektoren">1.5. Vektoren</h3>
+<p>Ein Vektor ist eine Liste von Dingen. Verwende c() (kombinieren), um eine Liste zu erstellen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>my_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">24</span>,<span class="dv">30</span>,<span class="dv">50</span>) </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>my_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Sandra"</span>, <span class="st">"Paul"</span>, <span class="st">"Jonas"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Bei der Berechnung eines Vektors wird dies für jedes Element gleichzeitig durchgeführt.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>my_ages <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27 26 32 52</code></pre>
+</div>
+</div>
+</section>
+<section id="datentypen" class="level3">
+<h3 class="anchored" data-anchor-id="datentypen">1.6. Datentypen</h3>
+<p>R muss wissen, um welche Art von Daten es sich handelt. Mathematische Berechnungen mit einem Wort führen zu einem Error.</p>
+<p><img src="images/clipboard-1992692399.png" class="img-fluid"></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_ages) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_names) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># my_names + 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="dataframes" class="level3">
+<h3 class="anchored" data-anchor-id="dataframes">1.7. Dataframes</h3>
+<p>Dies ist die” Excel-Tabelle” von R. Ein Datenrahmen ist zweidimensional: Zeilen (Beobachtungen) und Spalten (Variablen). Hier finden 99 % der Datenanalysen statt.</p>
+<p><img src="001_DATA/002_DATA_PROCESSED/Screenshot 2026-02-02 111438.png" class="img-fluid"></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),   </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),   </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">score =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">75</span>, <span class="dv">80</span>, <span class="dv">84</span>, <span class="dv">95</span>) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Der Dollarzeichen-Operator $ wird verwendet, um eine einzelne Spalte aus einem Datenrahmen auszuwählen. “df$score” bedeutet also: „Gehe zum Datenrahmen „df“ UND wähle die Spalte „score“ aus.</p>
+<p>Mit der Funktion <code>mean()</code> können wir Mittelwerte von Vektoren berechnen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>score </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 90 75 80 84 95</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 84.8</code></pre>
+</div>
+</div>
+<p>Benutze str() um eine Zusammenfassung des dataframes auszugeben.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   5 obs. of  3 variables:
+ $ id   : num  1 2 3 4 5
+ $ name : chr  "A" "B" "C" "D" ...
+ $ score: num  90 75 80 84 95</code></pre>
+</div>
+</div>
+</section>
+<section id="packages" class="level3">
+<h3 class="anchored" data-anchor-id="packages">1.8. Packages</h3>
+<p>Packages sind Tools (oder kleine “Software”) die in R für bestimmte Anwendungen geschrieben worden sind. Zum Beispiel wird das Package “ggplot” häufig für Visualisierungen verwendet. Das wichtigste Package-Bundle ist “tidyverse”.</p>
+<p>Generell können wir Pakete mit <code>install.packages()</code> installieren. Um ein bereits installiertes Paket zu laden und in unserem Skript verwenden zu können benutzen wir <code>library()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse") </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   4.0.0     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p>Das Tidyverse ist eine Sammlung aufeinander abgestimmter R-Pakete, die eine einheitliche und leicht verständliche Grammatik zum Importieren, Aufräumen, Transformieren und Visualisieren von Daten bereitstellen (im Gegensatz zu base-R).</p>
+<p>Bei Error “Kein package namens…” -&gt; vergessen das Package mit <code>library()</code> zu laden.</p>
+<p>Beispiele für wichtige und häufig verwendete Packages aus dem Tidyverse-Bundle sind <code>ggplot</code> (Visualisierung) <code>dplyr</code> (Data Manipulation, filter, select, summarize), <code>tidyr</code> (data reshaping) oder <code>readr</code> (schneller daten import)</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
