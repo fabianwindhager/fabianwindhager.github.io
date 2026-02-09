@@ -633,7 +633,7 @@ seqfplot(seq.df, main = "Sequence frequency plot", group = groups.om, border=T)
 ```{r}
 #| fig-width: 12
 #| fig-height: 10
-?seqdist
+#?seqdist
 costs <- seqcost(seq.df, method = "INDELSLOG")
 dist.dhd <- seqdist(seq.df, method = "DHD", indel = costs$indel)
 wardcluster_DHD <- hclust(as.dist(dist.dhd), method = "ward.D")

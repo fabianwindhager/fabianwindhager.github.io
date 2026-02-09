@@ -1063,7 +1063,7 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 <pre><code> [&gt;] computing distances using the OM metric</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] elapsed time: 3.69 secs</code></pre>
+<pre><code> [&gt;] elapsed time: 2.99 secs</code></pre>
 </div>
 </div>
 </section>
@@ -1105,29 +1105,40 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 <section id="bonus-dynamic-hamming-distance" class="level3">
 <h3 class="anchored" data-anchor-id="bonus-dynamic-hamming-distance">3.6. Bonus: Dynamic Hamming Distance</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>?seqdist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co">#?seqdist</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>costs <span class="ot">&lt;-</span> <span class="fu">seqcost</span>(seq.df, <span class="at">method =</span> <span class="st">"INDELSLOG"</span>)</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>dist.dhd <span class="ot">&lt;-</span> <span class="fu">seqdist</span>(seq.df, <span class="at">method =</span> <span class="st">"DHD"</span>, <span class="at">indel =</span> costs<span class="sc">$</span>indel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>starte den http Server für die Hilfe fertig</code></pre>
+<pre><code> [&gt;] 2114 sequences with 4 distinct states</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>costs <span class="ot">&lt;-</span> <span class="fu">seqcost</span>(seq.df, <span class="at">method =</span> <span class="st">"INDELSLOG"</span>)</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>dist.dhd <span class="ot">&lt;-</span> <span class="fu">seqdist</span>(seq.df, <span class="at">method =</span> <span class="st">"DHD"</span>, <span class="at">indel =</span> costs<span class="sc">$</span>indel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] 2114 sequences with 4 distinct states
- [&gt;] creating a 'sm' with the costs derived from the transition rates
- [&gt;] creating time varying substitution-cost matrix using transition rates ...
- [&gt;] computing time varying transition probabilities for states HG/G/D/HD ...
- [&gt;] 2072 distinct  sequences 
- [&gt;] min/max sequence lengths: 19/19
- [&gt;] computing distances using the DHD metric
- [&gt;] elapsed time: 1.14 secs</code></pre>
+<pre><code> [&gt;] creating a 'sm' with the costs derived from the transition rates</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>wardcluster_DHD <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.dhd), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>groups.dhd <span class="ot">&lt;-</span> <span class="fu">cutree</span>(wardcluster_DHD, <span class="at">k =</span> k)</span>
-<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">group =</span> groups.dhd, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] creating time varying substitution-cost matrix using transition rates ...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] computing time varying transition probabilities for states HG/G/D/HD ...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] 2072 distinct  sequences </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] min/max sequence lengths: 19/19</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] computing distances using the DHD metric</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] elapsed time: 0.16 secs</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>wardcluster_DHD <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.dhd), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>groups.dhd <span class="ot">&lt;-</span> <span class="fu">cutree</span>(wardcluster_DHD, <span class="at">k =</span> k)</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">group =</span> groups.dhd, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1135,7 +1146,7 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1143,7 +1154,7 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqfplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence frequency plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqfplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence frequency plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1153,8 +1164,8 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.om <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.om)</span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.dhd <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.dhd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.om <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.om)</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.dhd <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.dhd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1162,18 +1173,18 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 <h2 class="anchored" data-anchor-id="von-den-daten-zur-karte-spatial-data-frames-visualisierung">4. Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung</h2>
 <p>Mit dem Paket “<code>sf</code>” (“Spatial Features”) kann R auch als Geoinformationssystem verwendet werden. Das Paket “mapview” ermöglicht das einfache Erstellen von interaktiven Karten. Wir installieren beide Pakete mit <code>install.packages()</code> und laden sie mit <code>library()</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(c("sf", "mapview")) library(sf) library(mapview)</span></span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(c("sf", "mapview")) library(sf) library(mapview)</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Linking to GEOS 3.11.2, GDAL 3.7.2, PROJ 9.3.0; sf_use_s2() is TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Um Karten zu erstellen müssen wir unserem Dataframe räumliche Informationen hinzufügen. Die Statistik Austria stellt zu diesem Zweck in ihrem STATatlas die regionale Gliederung Österreichs in Form von .shp files zur Verfügung.</p>
 <p>Ein Shapefile ist ein älteres, sehr verbreitetes Dateiformat, mit dem man Kartenobjekte wie Punkte, Linien und Flächen samt ihren Daten speichert. Es besteht aus mehreren zusammengehörigen Dateien (z. B. .shp, .shx, .dbf), die gemeinsam in einem Ordner liegen müssen, und wird von den meisten GIS‑Programmen unterstützt.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>shp <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/OGDEXT_GEM_1_STATISTIK_AUSTRIA_20250101/STATISTIK_AUSTRIA_GEM_20250101.shp"</span>)  </span>
-<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shp) <span class="co"># in der Spalte geometry sind die Koordinaten (Punkte, Polygone, Linien) für jede Gemeinde in Österreich gespeichert</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>shp <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/OGDEXT_GEM_1_STATISTIK_AUSTRIA_20250101/STATISTIK_AUSTRIA_GEM_20250101.shp"</span>)  </span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shp) <span class="co"># in der Spalte geometry sind die Koordinaten (Punkte, Polygone, Linien) für jede Gemeinde in Österreich gespeichert</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 6 features and 2 fields
 Geometry type: MULTIPOLYGON
@@ -1192,51 +1203,51 @@ Projected CRS: MGI / Austria Lambert
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>shp<span class="sc">$</span>g_id <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(shp<span class="sc">$</span>g_id)</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seq, shp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gemnr"</span> <span class="ot">=</span> <span class="st">"g_id"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
-<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recoding map$Wert into map$typ</span></span>
-<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>typ <span class="ot">&lt;-</span> map<span class="sc">$</span>Wert <span class="sc">%&gt;%</span></span>
-<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(</span>
-<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"101"</span>,</span>
-<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"102"</span>,</span>
-<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"103"</span>,</span>
-<span id="cb122-10"><a href="#cb122-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"210"</span>,</span>
-<span id="cb122-11"><a href="#cb122-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"220"</span>,</span>
-<span id="cb122-12"><a href="#cb122-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"310"</span>,</span>
-<span id="cb122-13"><a href="#cb122-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"320"</span>,</span>
-<span id="cb122-14"><a href="#cb122-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"330"</span>,</span>
-<span id="cb122-15"><a href="#cb122-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"410"</span>,</span>
-<span id="cb122-16"><a href="#cb122-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"420"</span>,</span>
-<span id="cb122-17"><a href="#cb122-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"430"</span></span>
-<span id="cb122-18"><a href="#cb122-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb122-19"><a href="#cb122-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-20"><a href="#cb122-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb122-21"><a href="#cb122-21" aria-hidden="true" tabindex="-1"></a>map_cluster <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
-<span id="cb122-22"><a href="#cb122-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cluster.dhd))<span class="sc">+</span></span>
-<span id="cb122-23"><a href="#cb122-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)<span class="sc">+</span></span>
-<span id="cb122-24"><a href="#cb122-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb122-25"><a href="#cb122-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-26"><a href="#cb122-26" aria-hidden="true" tabindex="-1"></a>map_typ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
-<span id="cb122-27"><a href="#cb122-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> typ), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb122-28"><a href="#cb122-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb122-29"><a href="#cb122-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb122-30"><a href="#cb122-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"#b35e6b"</span>,</span>
-<span id="cb122-31"><a href="#cb122-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"#d67169"</span>,</span>
-<span id="cb122-32"><a href="#cb122-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"#e08f81"</span>,</span>
-<span id="cb122-33"><a href="#cb122-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#eeaf58"</span>,</span>
-<span id="cb122-34"><a href="#cb122-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#f5ca82"</span>,</span>
-<span id="cb122-35"><a href="#cb122-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#fdf453"</span>,</span>
-<span id="cb122-36"><a href="#cb122-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#fefabb"</span>,</span>
-<span id="cb122-37"><a href="#cb122-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"#eeec85"</span>,</span>
-<span id="cb122-38"><a href="#cb122-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"#c2d38c"</span>,</span>
-<span id="cb122-39"><a href="#cb122-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"#84b870"</span>,</span>
-<span id="cb122-40"><a href="#cb122-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"#789d6e"</span></span>
-<span id="cb122-41"><a href="#cb122-41" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb122-42"><a href="#cb122-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb122-43"><a href="#cb122-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb122-44"><a href="#cb122-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-45"><a href="#cb122-45" aria-hidden="true" tabindex="-1"></a>map_typ <span class="sc">/</span> map_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>shp<span class="sc">$</span>g_id <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(shp<span class="sc">$</span>g_id)</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seq, shp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gemnr"</span> <span class="ot">=</span> <span class="st">"g_id"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
+<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recoding map$Wert into map$typ</span></span>
+<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>typ <span class="ot">&lt;-</span> map<span class="sc">$</span>Wert <span class="sc">%&gt;%</span></span>
+<span id="cb127-6"><a href="#cb127-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(</span>
+<span id="cb127-7"><a href="#cb127-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"101"</span>,</span>
+<span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"102"</span>,</span>
+<span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"103"</span>,</span>
+<span id="cb127-10"><a href="#cb127-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"210"</span>,</span>
+<span id="cb127-11"><a href="#cb127-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"220"</span>,</span>
+<span id="cb127-12"><a href="#cb127-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"310"</span>,</span>
+<span id="cb127-13"><a href="#cb127-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"320"</span>,</span>
+<span id="cb127-14"><a href="#cb127-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"330"</span>,</span>
+<span id="cb127-15"><a href="#cb127-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"410"</span>,</span>
+<span id="cb127-16"><a href="#cb127-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"420"</span>,</span>
+<span id="cb127-17"><a href="#cb127-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"430"</span></span>
+<span id="cb127-18"><a href="#cb127-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb127-19"><a href="#cb127-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-20"><a href="#cb127-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb127-21"><a href="#cb127-21" aria-hidden="true" tabindex="-1"></a>map_cluster <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb127-22"><a href="#cb127-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cluster.dhd))<span class="sc">+</span></span>
+<span id="cb127-23"><a href="#cb127-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)<span class="sc">+</span></span>
+<span id="cb127-24"><a href="#cb127-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb127-25"><a href="#cb127-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-26"><a href="#cb127-26" aria-hidden="true" tabindex="-1"></a>map_typ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb127-27"><a href="#cb127-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> typ), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb127-28"><a href="#cb127-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb127-29"><a href="#cb127-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb127-30"><a href="#cb127-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"#b35e6b"</span>,</span>
+<span id="cb127-31"><a href="#cb127-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"#d67169"</span>,</span>
+<span id="cb127-32"><a href="#cb127-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"#e08f81"</span>,</span>
+<span id="cb127-33"><a href="#cb127-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#eeaf58"</span>,</span>
+<span id="cb127-34"><a href="#cb127-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#f5ca82"</span>,</span>
+<span id="cb127-35"><a href="#cb127-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#fdf453"</span>,</span>
+<span id="cb127-36"><a href="#cb127-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#fefabb"</span>,</span>
+<span id="cb127-37"><a href="#cb127-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"#eeec85"</span>,</span>
+<span id="cb127-38"><a href="#cb127-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"#c2d38c"</span>,</span>
+<span id="cb127-39"><a href="#cb127-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"#84b870"</span>,</span>
+<span id="cb127-40"><a href="#cb127-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"#789d6e"</span></span>
+<span id="cb127-41"><a href="#cb127-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb127-42"><a href="#cb127-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb127-43"><a href="#cb127-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb127-44"><a href="#cb127-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-45"><a href="#cb127-45" aria-hidden="true" tabindex="-1"></a>map_typ <span class="sc">/</span> map_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1244,8 +1255,8 @@ Projected CRS: MGI / Austria Lambert
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "cluster.dhd")</span></span>
-<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "Wert")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "cluster.dhd")</span></span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "Wert")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
