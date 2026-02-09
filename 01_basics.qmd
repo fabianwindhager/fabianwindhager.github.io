@@ -133,7 +133,11 @@ names(moves)
 
 Der Pipe-Operator `%>%` (`Strg + Umschalt + M`) übergibt das Ergebnis einer Funktion an die nächste.
 
-```{r} pop %>%    filter(gemnr == 10101) %>%    pull(pop) %>%    mean()}
+```{r}
+pop %>%    
+  filter(gemnr == 10101) %>%    
+  pull(pop) %>%    
+  mean()
 ```
 
 Die Pipe kann man lesen als „UND DANN“. Daten nehmen, UND DANN filtern, UND DANN Bevölkerungszahlen ziehen, UND DANN Mittelwert nehmen.
@@ -155,7 +159,7 @@ Mit `select()` behält man nur bestimmte Spalten bei. Nützlich, um Datensätze 
 
 ```{r}
 kennz <- pop_2002 %>%    
-  select(gemnr)  head(kennz)
+  select(gemnr)
 ```
 
 ### 2.3. Mutate

@@ -104,6 +104,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -165,7 +194,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" id="toc-bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" class="nav-link" data-scroll-target="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten">2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten</a>
   <ul class="collapse">
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#the-pipe-operator" id="toc-the-pipe-operator" class="nav-link" data-scroll-target="#the-pipe-operator">2.1. The pipe operator %&gt;%</a></li>
+  <li><a href="#filter-select" id="toc-filter-select" class="nav-link" data-scroll-target="#filter-select">2.2. Filter &amp; Select</a></li>
+  <li><a href="#mutate" id="toc-mutate" class="nav-link" data-scroll-target="#mutate">2.3. Mutate</a></li>
+  <li><a href="#joins" id="toc-joins" class="nav-link" data-scroll-target="#joins">2.4. Joins</a></li>
+  <li><a href="#group-by-summarize" id="toc-group-by-summarize" class="nav-link" data-scroll-target="#group-by-summarize">2.5. Group By &amp; Summarize</a></li>
+  <li><a href="#the-grammar-of-graphics" id="toc-the-grammar-of-graphics" class="nav-link" data-scroll-target="#the-grammar-of-graphics">2.6. The Grammar of Graphics</a></li>
+  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link" data-scroll-target="#tidy-data">2.7. Tidy-Data</a></li>
+  <li><a href="#raumtypologien" id="toc-raumtypologien" class="nav-link" data-scroll-target="#raumtypologien">2.8. Raumtypologien</a></li>
   </ul></li>
+  <li><a href="#sequenzanalyse" id="toc-sequenzanalyse" class="nav-link" data-scroll-target="#sequenzanalyse">3. Sequenzanalyse</a>
+  <ul class="collapse">
+  <li><a href="#was-ist-sequenzanalyse" id="toc-was-ist-sequenzanalyse" class="nav-link" data-scroll-target="#was-ist-sequenzanalyse">3.1. Was ist Sequenzanalyse?</a></li>
+  <li><a href="#was-ist-eine-sequenz" id="toc-was-ist-eine-sequenz" class="nav-link" data-scroll-target="#was-ist-eine-sequenz">3.2. Was ist eine Sequenz?</a></li>
+  <li><a href="#kategorisierung-von-bevölkerungsveränderungsraten" id="toc-kategorisierung-von-bevölkerungsveränderungsraten" class="nav-link" data-scroll-target="#kategorisierung-von-bevölkerungsveränderungsraten">3.3. Kategorisierung von Bevölkerungsveränderungsraten</a></li>
+  <li><a href="#berechnung-von-distanzmaßen-mit-optimal-matching" id="toc-berechnung-von-distanzmaßen-mit-optimal-matching" class="nav-link" data-scroll-target="#berechnung-von-distanzmaßen-mit-optimal-matching">3.4. Berechnung von Distanzmaßen mit Optimal Matching</a></li>
+  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">3.5. Clustering</a></li>
+  <li><a href="#bonus-dynamic-hamming-distance" id="toc-bonus-dynamic-hamming-distance" class="nav-link" data-scroll-target="#bonus-dynamic-hamming-distance">3.6. Bonus: Dynamic Hamming Distance</a></li>
+  </ul></li>
+  <li><a href="#von-den-daten-zur-karte-spatial-data-frames-visualisierung" id="toc-von-den-daten-zur-karte-spatial-data-frames-visualisierung" class="nav-link" data-scroll-target="#von-den-daten-zur-karte-spatial-data-frames-visualisierung">4. Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung</a></li>
   </ul>
 </nav>
     </div>
@@ -368,9 +415,840 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="section" class="level3">
 <h3 class="anchored" data-anchor-id="section"></h3>
-
-
 </section>
+<section id="the-pipe-operator" class="level3">
+<h3 class="anchored" data-anchor-id="the-pipe-operator">2.1. The pipe operator %&gt;%</h3>
+<p>Der Pipe-Operator <code>%&gt;%</code> (<code>Strg + Umschalt + M</code>) übergibt das Ergebnis einer Funktion an die nächste.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">%&gt;%</span>    </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gemnr <span class="sc">==</span> <span class="dv">10101</span>) <span class="sc">%&gt;%</span>    </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(pop) <span class="sc">%&gt;%</span>    </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13619.38</code></pre>
+</div>
+</div>
+<p>Die Pipe kann man lesen als „UND DANN“. Daten nehmen, UND DANN filtern, UND DANN Bevölkerungszahlen ziehen, UND DANN Mittelwert nehmen.</p>
+</section>
+<section id="filter-select" class="level3">
+<h3 class="anchored" data-anchor-id="filter-select">2.2. Filter &amp; Select</h3>
+<p>Die Datenbereinigung macht 80 % der Arbeit aus. <code>dplyr</code> bietet fünf wichtige Funktionen. Die ersten beiden reduzieren die Datengröße.</p>
+<p>Mit <code>filter()</code> behält man nur Zeilen, die einer Bedingung entsprechen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pop_2002 <span class="ot">&lt;-</span> pop <span class="sc">%&gt;%</span>    </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(jahr <span class="sc">==</span> <span class="dv">2002</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><img src="images/Screenshot 2026-02-02 134848.png" class="img-fluid"></p>
+<p>Mit <code>select()</code> behält man nur bestimmte Spalten bei. Nützlich, um Datensätze mit vielen Spalten zu bereinigen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kennz <span class="ot">&lt;-</span> pop_2002 <span class="sc">%&gt;%</span>    </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gemnr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="mutate" class="level3">
+<h3 class="anchored" data-anchor-id="mutate">2.3. Mutate</h3>
+<p>Oftmals müssen Sie aus alten Daten neue Daten erstellen. In unserem Fall möchten wir beispielsweise Migrationssalden berechnen. <code>mutate()</code> fügt dem Dataframe eine neue Spalte mit der gewünschten Berechnung hinzu.</p>
+<p>Wir berechnen zuerst das <strong>Binnenmigrationssaldo (<code>bi_saldo</code>)</strong> und dann das <strong>Aussenwanderungssaldo</strong> (<strong><code>au_saldo</code></strong>) für alle Gemeinden in Österreich.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>moves <span class="ot">&lt;-</span> moves <span class="sc">%&gt;%</span>    </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bi_saldo =</span> bi_zu <span class="sc">-</span> bi_weg,          </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">au_saldo =</span> au_zu <span class="sc">-</span> au_weg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="joins" class="level3">
+<h3 class="anchored" data-anchor-id="joins">2.4. Joins</h3>
+<p>Da wir in sowohl in “<code>moves</code>” als auch in “<code>pop</code>” die gleichen Gemeindekennziffern haben, können wir die beiden dataframes vereinigen (oder “joinen”). Zuvor müssen wir allerdings die Jahre 2024 und 2025 aus dem “pop” datensatz entfernen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop <span class="sc">%&gt;%</span>    </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>jahr <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2024</span>, <span class="dv">2025</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Wir joinen die beiden Datensätze anhand der Variablen <code>gemnr</code> und <code>jahr</code>.</p>
+<p>Der Code verbindet die beiden Tabellen <code>pop</code> und <code>moves</code> anhand der Spalten (<code>by</code>) <code>gemnr</code> und <code>jahr</code>, sodass alle Daten aus <code>pop</code> beibehalten und die passenden Werte aus <code>moves</code> ergänzt werden.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dta <span class="ot">&lt;-</span> <span class="fu">left_join</span>(pop, moves, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gemnr"</span>, <span class="st">"jahr"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Die erste Zahl der Gemeindekennziffern (“<code>gemnr</code>”) gibt das betreffende Bundesland an. Alle Gemeindekennziffern die mit “<code>7</code>” beginnen, sind demnach Tiroler Gemeinden.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dta <span class="ot">&lt;-</span> dta <span class="sc">%&gt;%</span>   </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bld =</span> <span class="fu">str_sub</span>(gemnr, <span class="dv">1</span>, <span class="dv">1</span>))  </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Wir ersetzen NAs mit 0 (Manche Gemeinden erfahren keine Zu- oder Abwanderung in einzelnen Jahren) </span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>dta[<span class="fu">is.na</span>(dta)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Nun haben wir einen Datensatz mit dem wir weitere Berechnungen anstellen können!</p>
+</section>
+<section id="group-by-summarize" class="level3">
+<h3 class="anchored" data-anchor-id="group-by-summarize">2.5. Group By &amp; Summarize</h3>
+<p><code>group_by()</code> teilt die Daten in Gruppen nach einer oder mehreren Variablen, und <code>summarize()</code> berechnet dann zusammenfassende Kennzahlen (wie Summe oder Mittelwert) für jede Gruppe.</p>
+<p>Hier berechnen wir Gesamtbevölkerungszahlen und Migrationssalden (Innen- und Aussenwanderungen) für jedes Bundesland, in dem wir die Gemeindezahlen zusammenfassen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>bld_dta <span class="ot">&lt;-</span> dta <span class="sc">%&gt;%</span>    </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bld, jahr) <span class="sc">%&gt;%</span>    </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">pop_tot =</span> <span class="fu">sum</span>(pop),             </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">bi_saldo_tot =</span> <span class="fu">sum</span>(bi_saldo),             </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">au_saldo_tot =</span> <span class="fu">sum</span>(au_saldo)) <span class="sc">%&gt;%</span>    </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'bld'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bld_dta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  bld    jahr pop_tot bi_saldo_tot au_saldo_tot
+  &lt;chr&gt; &lt;int&gt;   &lt;int&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+1 1      2002  276673          120          523
+2 1      2003  276542          302          723
+3 1      2004  276792          807         1096
+4 1      2005  278032          931          886
+5 1      2006  279127         1129          753
+6 1      2007  280062         1138          625</code></pre>
+</div>
+</div>
+<p>Wir berechnen je eine neue Spalte (<code>mutate</code>) mit den:</p>
+<ol type="1">
+<li><p><strong>Bevölkerungsveränderungsrate</strong></p>
+<p>Die Bevölkerungsveränderungsrate ist definiert als <span class="math display">\[\frac{Bevölkerungsstand_t - Bevölkerungsstand_{t-1}}{Bevölkerungsstand_{t-1}} \times 100\]</span>.</p>
+<p>Absolute Veränderung = Differenz zwischen zwei Jahren (<code>pop_diff</code>) Rate = Differenz relativ zur Ausgangsbevölkerung (<code>pop_rate</code>)</p>
+<p>Die Bevölkerungsveränderungsrate gibt an, um wie viel Prozent sich die Bevölkerung eines Gebietes innerhalb eines bestimmten Zeitraums verändert hat.</p></li>
+</ol>
+<!-- -->
+<ol start="2" type="1">
+<li><p><strong>Binnenwanderungsrate</strong></p>
+<p>Die Binnenwanderungsrate berechnet sich als <span class="math display">\[\frac{\text{Binnenwanderungssaldo}}{\text{Bevölkerungsstand}} \times 1000\]</span>.</p>
+<p>Die Rate gibt an, wie viele Personen pro 1.000 Einwohner:innen durch Binnenmigration gewonnen oder verloren werden</p></li>
+<li><p><strong>Aussenwanderungsrate</strong></p>
+<p>Die Außenwanderungsrate berechnet sich als <span class="math display">\[\frac{\text{Außenwanderungssaldo}}{\text{Bevölkerungsstand}} \times 1000\]</span>.</p>
+<p>Die Außenwanderungsrate zeigt, wie viele Personen pro 1.000 Einwohner:innen durch Zu- und Wegzüge über die Staatsgrenze hinweg gewonnen oder verloren werden.</p></li>
+<li><p><strong>Gesamtmigrationsbilanz</strong></p>
+<p>Die Gesamtmigrationsbilanz berechnet sich als <span class="math display">\[\text{Binnenwanderungssaldo} + \text{Außenwanderungssaldo}\]</span>.</p>
+<p>Die Gesamtmigrationsbilanz zeigt den gesamten Bevölkerungsgewinn oder -verlust einer Region durch alle Wanderungsbewegungen.</p>
+<p>Die Gesamtmigrationsrate berechnet sich analog zu den anderen Migrationsraten als <span class="math display">\[\frac{\text{Gesamtmigrationssaldo}}{\text{Bevölkerungsstand}} \times 1000\]</span>.</p></li>
+<li><p><strong>Natürliche Bevölkerungsveränderung</strong></p>
+<p>Sieht man sich die demographische Gesamtrechnung an:</p>
+<p><span class="math display">\[ \Delta \text{Bevölkerungsveränderung} = \underbrace{\text{natürliche Veränderung}}_{\text{Geburten - Sterbefälle}} + \underbrace{\text{Binnenwanderungssaldo}}_{\text{Zu- minus Fortzüge innerhalb des Landes}} + \underbrace{\text{Außenwanderungssaldo}}_{\text{Zu- minus Fortzüge über die Staatsgrenze}} \]</span></p>
+<p>müssten wir theoretisch die natürliche Bevölkerungsveränderung mit <span class="math inline">\(\text{Bevölkerungsveränderung} - \text{Gesamtmigrationssaldo}\)</span>. berechnen können.</p>
+<p><strong>ABER ACHTUNG:</strong></p>
+<p>Die auf diese Art berechneten natürlichen Bevölkerungszahlen können von offiziellen Statistiken abweichen, weil unsere Bevölkerungsstände zum Stichtag 1.1. erfasst werden, während Migrationsdaten über das Jahr verteilt für den Referenzzeitraum erhoben werden!</p></li>
+</ol>
+<p>Die Funktion <strong><code>lag()</code></strong> verschiebt die Werte einer Variable um eine Position nach unten, sodass man den vorherigen Wert einer Beobachtung mit dem aktuellen vergleichen kann (z. B. für Zeitreihen, Differenzen oder eben das Berechnen von <strong>relativen Veränderungen</strong>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>bld_dta <span class="ot">&lt;-</span> bld_dta <span class="sc">%&gt;%</span>    </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bld) <span class="sc">%&gt;%</span>    </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pop_diff =</span> pop_tot <span class="sc">-</span> <span class="fu">lag</span>(pop_tot),          </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">pop_rate =</span> (pop_diff <span class="sc">/</span> <span class="fu">lag</span>(pop_tot)) <span class="sc">*</span> <span class="dv">100</span>,          </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">bi_rate =</span> (bi_saldo_tot <span class="sc">/</span> pop_tot) <span class="sc">*</span> <span class="dv">1000</span>,          </span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">au_rate =</span> (au_saldo_tot <span class="sc">/</span> pop_tot) <span class="sc">*</span> <span class="dv">1000</span>,          </span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">mig_saldo =</span> au_saldo_tot <span class="sc">+</span> bi_saldo_tot,          </span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">mig_rate =</span> (mig_saldo <span class="sc">/</span> pop_tot) <span class="sc">*</span> <span class="dv">1000</span>,          </span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">nat_change =</span> (pop_tot <span class="sc">-</span> <span class="fu">lag</span>(pop_tot) <span class="sc">-</span> <span class="fu">lag</span>(mig_saldo))) <span class="sc">%&gt;%</span>    </span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-grammar-of-graphics" class="level3">
+<h3 class="anchored" data-anchor-id="the-grammar-of-graphics">2.6. The Grammar of Graphics</h3>
+<p><code>ggplot2</code> basiert auf Ebenen. Man erstellt nicht einfach „ein Diagramm“, sondern baut es Schicht für Schicht auf, wie einen Kuchen. Die wesentlichsten Funktionen von ggplot finden sich unter</p>
+<p><em>Help-&gt;Cheat Sheets-&gt;Data Visualistion with ggplot</em></p>
+<p>Die 3 wesentlichen Schichten:</p>
+<ol type="1">
+<li>Data: Der Datenframe den man plotten möchte.</li>
+<li>Aesthetics (aes): Zuordnung von Variablen zu visuellen Eigenschaften (X-Achse, Y-Achse, Farbe, Größe)</li>
+<li>Geometries (geom): Die zu zeichnende Form (oder “Art”; Bar, Point, Line)</li>
+</ol>
+<p><strong>Das Plus Zeichen+ :</strong> In ggplot verwenden wir <strong><code>+</code></strong> zum Hinzufügen von Ebenen, nicht die Pipe <code>%&gt;%</code>. So können Sie ganz einfach Titel, Themen und Skalen hinzufügen.</p>
+<p>Mit <code>geom_line()</code> erstellen wir einen Line-Chart.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pop_tirol <span class="ot">&lt;-</span> bld_dta <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bld <span class="sc">==</span> <span class="dv">7</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> pop_rate))<span class="sc">+</span> </span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wir können mit labs() die Labels der x- und y- Axe anpassen</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> pop_rate))<span class="sc">+</span> </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Bevölkerungsveränderung in %"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wir können ein vorgefertigtes Thema mit beispielsweise theme_classic() auswählen</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> pop_rate))<span class="sc">+</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Bevölkerungsveränderung in %"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-20-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mit "fill" können wir die Farbe der Balken ändern (auch mit Farbcodes möglich!)</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> pop_rate))<span class="sc">+</span> </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"dodgerblue"</span>)<span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Bevölkerungsveränderung in %"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-20-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mittels zb. as.factor() können wir in ggplot den Datentyp angeben, ohne den ursprünglichen Dataframe zu ändern.</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit theme() können wir jedes Element des Diagramms ansteuern und verändern</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> pop_rate))<span class="sc">+</span> </span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"firebrick"</span>)<span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Bevölkerungsveränderung in %"</span>, <span class="at">title =</span> <span class="st">"Bevölkerungsveränderungrate in %; Tirol 2003-2023"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-20-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mit <code>geom_col()</code> erstellen wir einen Bar-Chart. Mit <code>theme_classic()</code> können wir das Thema des Plots ändern.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> au_saldo_tot))<span class="sc">+</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Bevölkerungsveränderung absolut"</span>, <span class="at">title =</span> <span class="st">"Bevölkerungsveränderung Tirol, 2002-2023"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> bi_saldo_tot))<span class="sc">+</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Binnenwanderungssaldo"</span>, <span class="at">title =</span> <span class="st">"Binnenwanderungssaldo Tirol, 2002-2023"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-21-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> au_saldo_tot))<span class="sc">+</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Aussenwanderungssaldo"</span>, <span class="at">title =</span> <span class="st">"Aussenwanderungssaldo Tirol, 2002-2023"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-21-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pop_tirol, <span class="fu">aes</span>(<span class="at">x =</span> jahr, <span class="at">y =</span> mig_saldo))<span class="sc">+</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Gesamtmigrationssaldo"</span>, <span class="at">title =</span> <span class="st">"Gesamtmigrationssaldo Tirol, 2002-2023"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-21-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tidy-data" class="level3">
+<h3 class="anchored" data-anchor-id="tidy-data">2.7. Tidy-Data</h3>
+<p>Das <strong>Long-Format</strong> (oder “Tidy Data”) ist ein Datenformat, bei dem jede Variable eine Spalte, jede Beobachtung eine Zeile und jede Einheit eine Tabelle bildet, sodass Daten klar strukturiert und einfach analysierbar sind.</p>
+<p>Im <strong>Wide-Format</strong> hat jede Variable eigene Spalten, oft mit mehreren Messzeitpunkten pro Spalte, während im <strong>Long-Format</strong> jede Zeile eine einzelne Beobachtung enthält und Messzeitpunkte oder Kategorien in einer eigenen Spalte stehen.</p>
+<p><img src="images/5ea0e495-873a-4de3-8dc8-4e51cc1b804a.png" class="img-fluid"></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>bld_dta_long <span class="ot">&lt;-</span> bld_dta <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recoding bld_dta$bld into bld_dta$bld_rec</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>bld_dta<span class="sc">$</span>bld <span class="ot">&lt;-</span> bld_dta<span class="sc">$</span>bld <span class="sc">%&gt;%</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Burgenland"</span> <span class="ot">=</span> <span class="st">"1"</span>,</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Kärnten"</span> <span class="ot">=</span> <span class="st">"2"</span>,</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Niederösterreich"</span> <span class="ot">=</span> <span class="st">"3"</span>,</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Oberösterreich"</span> <span class="ot">=</span> <span class="st">"4"</span>,</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Salzburg"</span> <span class="ot">=</span> <span class="st">"5"</span>,</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Steiermark"</span> <span class="ot">=</span> <span class="st">"6"</span>,</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tirol"</span> <span class="ot">=</span> <span class="st">"7"</span>,</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vorarlberg"</span> <span class="ot">=</span> <span class="st">"8"</span>,</span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Wien"</span> <span class="ot">=</span> <span class="st">"9"</span></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>rates_all <span class="ot">&lt;-</span> bld_dta <span class="sc">%&gt;%</span> </span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(jahr, bld, bi_rate, au_rate, mig_rate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>rates_all <span class="ot">&lt;-</span> rates_all <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(bi_rate, au_rate, mig_rate),</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"variable"</span>,</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> rates_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bld <span class="sc">==</span> <span class="st">"Tirol"</span>), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> value, <span class="at">col =</span> variable, <span class="at">group =</span> variable))<span class="sc">+</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"au_rate"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>,  </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"bi_rate"</span> <span class="ot">=</span> <span class="st">"firebrick"</span>,   </span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"mig_rate"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>),</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Aussenwanderungsrate"</span>, <span class="st">"Binnenwanderungsrate"</span>, <span class="st">"Gesamtwanderungsrate"</span>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Rate pro 1000 EW"</span>, <span class="at">x =</span> <span class="st">" "</span>, <span class="at">col =</span> <span class="st">" "</span>, <span class="at">title =</span> <span class="st">"Migrationsstatistik Tirol, 2003-2023"</span>, <span class="at">caption =</span> <span class="st">"Quelle: Statistik Austria"</span>)<span class="sc">+</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> rates_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bld <span class="sc">==</span> <span class="st">"Tirol"</span>), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> value, <span class="at">col =</span> variable, <span class="at">group =</span> variable))<span class="sc">+</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">se=</span> F, <span class="at">span =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"au_rate"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>,  </span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"bi_rate"</span> <span class="ot">=</span> <span class="st">"firebrick"</span>,   </span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"mig_rate"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>), </span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Aussenwanderungsrate"</span>, <span class="st">"Binnenwanderungsrate"</span>, <span class="st">"Gesamtwanderungsrate"</span>)</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Rate pro 1000 EW"</span>, <span class="at">x =</span> <span class="st">" "</span>, <span class="at">col =</span> <span class="st">" "</span>, <span class="at">title =</span> <span class="st">"Migrationsstatistik Tirol, 2003-2023"</span>, <span class="at">caption =</span> <span class="st">"Quelle: Statistik Austria"</span>)<span class="sc">+</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> rates_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bld <span class="sc">==</span> <span class="st">"Tirol"</span>), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> value, <span class="at">fill =</span> variable, <span class="at">group =</span> variable))<span class="sc">+</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"au_rate"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>,  </span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"bi_rate"</span> <span class="ot">=</span> <span class="st">"firebrick"</span>,   </span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"mig_rate"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>), </span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Aussenwanderungsrate"</span>, <span class="st">"Binnenwanderungsrate"</span>, <span class="st">"Gesamtwanderungsrate"</span>)</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Rate pro 1000 EW"</span>, <span class="at">x =</span> <span class="st">" "</span>, <span class="at">fill =</span> <span class="st">" "</span>, <span class="at">title =</span> <span class="st">"Migrationsstatistik Tirol, 2003-2023"</span>, <span class="at">caption =</span> <span class="st">"Quelle: Statistik Austria"</span>)<span class="sc">+</span></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="co"># Diese Darstellung ist fehlerhaft, warum?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-24-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> rates_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bld <span class="sc">==</span> <span class="st">"Tirol"</span>), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> value, <span class="at">fill =</span> variable, <span class="at">group =</span> variable))<span class="sc">+</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)<span class="sc">+</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"au_rate"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>,  </span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"bi_rate"</span> <span class="ot">=</span> <span class="st">"firebrick"</span>,   </span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"mig_rate"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>), </span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Aussenwanderungsrate"</span>, <span class="st">"Binnenwanderungsrate"</span>, <span class="st">"Gesamtwanderungsrate"</span>)</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Rate pro 1000 EW"</span>, <span class="at">x =</span> <span class="st">" "</span>, <span class="at">fill =</span> <span class="st">" "</span>, <span class="at">title =</span> <span class="st">"Migrationsstatistik Tirol, 2003-2023"</span>, <span class="at">caption =</span> <span class="st">"Quelle: Statistik Austria"</span>)<span class="sc">+</span></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-24-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mit <code>facet_wrap()</code> oder <code>facet_grid()</code> können wir diese Darstellung auch für alle Bundesländer in einem Plot vergleichend darstellen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> rates_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(variable <span class="sc">!=</span> <span class="st">"mig_rate"</span>),</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(jahr), <span class="at">y =</span> value, <span class="at">fill =</span> variable, <span class="at">group =</span> variable))<span class="sc">+</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_classic()+</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"au_rate"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>,  </span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>               <span class="st">"bi_rate"</span> <span class="ot">=</span> <span class="st">"firebrick"</span>),</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Aussenwanderungsrate"</span>, <span class="st">"Binnenwanderungsrate"</span>)</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(bld<span class="sc">~</span>.)<span class="sc">+</span></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Rate pro 1000 EW"</span>, <span class="at">x =</span> <span class="st">" "</span>, <span class="at">fill =</span> <span class="st">" "</span>,</span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Migrationsstatistik Österreichischer Bundesländer, 2003-2023"</span>,</span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Quelle: Statistik Austria"</span>)<span class="sc">+</span></span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="raumtypologien" class="level3">
+<h3 class="anchored" data-anchor-id="raumtypologien">2.8. Raumtypologien</h3>
+<p>Die Urban-Rural-Typologie der Statistik Austria ist eine räumliche Klassifikation, die Gemeinden bzw. Regionen anhand von Kriterien wie Bevölkerungsdichte, strukturellen Merkmalen und Erreichbarkeit in städtische, intermediäre und ländliche Raumtypen einteilt, um statistische Analysen zu ermöglichen.</p>
+<p>Die Urban-Rural Typologie der Statistik Austria kann im STATAtlas heruntergeladen werden: <a href="#0">https://www.statistik.at/atlas/?mapid=topo_regionale_gliederung_oesterreich</a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>typ <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">"data/003_gliederungen_nach_städtischen_und_ländlichen_gebieten(1).csv"</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(typ)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gemnr                           Name Wert
+1 10101                     Eisenstadt  103
+2 10201                           Rust  410
+3 10301 Breitenbrunn am Neusiedler See  310
+4 10302                 Donnerskirchen  310
+5 10303                    Großhöflein  103
+6 10304                      Hornstein  310</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="sequenzanalyse" class="level2">
+<h2 class="anchored" data-anchor-id="sequenzanalyse">3. Sequenzanalyse</h2>
+<section id="was-ist-sequenzanalyse" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-sequenzanalyse">3.1. Was ist Sequenzanalyse?</h3>
+<p>Die <strong>Sequenzanalyse</strong> ist eine Methode zur Untersuchung von Abfolgen <strong>kategorialer</strong> Zustände über die Zeit. Im Unterschied zu klassischen statistischen Ansätzen betrachtet sie nicht nur, <strong>welche Ereignisse auftreten</strong>, sondern auch <strong>in welcher Reihenfolge und Dauer</strong> sie stattfinden. Dadurch lassen sich typische <strong>Verlaufsformen</strong> – etwa von Bildungs-, Erwerbs- oder Mobilitätsbiographien – sichtbar machen und miteinander vergleichen. Ebenfalls können kategorisierte Bevölkerungsveränderungen zwischen statistischen Einheiten verglichen werden.</p>
+<p>Typische Fragestellungen, bei denen eine Sequenzanalyse sinnvoll sein kann:</p>
+<p>Welche typischen Verlaufsformen lassen sich in den Daten erkennen, und wie unterscheiden sich diese zwischen statistischen Einheiten? Können darin typische Verlaufsmuster erkannt werden?</p>
+</section>
+<section id="was-ist-eine-sequenz" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-eine-sequenz">3.2. Was ist eine Sequenz?</h3>
+<p>Eine <strong>Sequenz</strong> ist eine geordnete Folge von Zuständen oder Ereignissen, die eine Einheit (z. B. eine Person oder Gemeinde) über mehrere Zeitpunkte hinweg durchläuft.</p>
+<p><img src="images/Screenshot 2026-02-03 163841.png" class="img-fluid" width="486"></p>
+<p>In diesem Beispiel wären x1, x3, x4 Zustände. Die statistische Einheit (observation) durchläuft diese Zustände im Zeitverlauf.</p>
+</section>
+<section id="kategorisierung-von-bevölkerungsveränderungsraten" class="level3">
+<h3 class="anchored" data-anchor-id="kategorisierung-von-bevölkerungsveränderungsraten">3.3. Kategorisierung von Bevölkerungsveränderungsraten</h3>
+<p>Ziel in diesem Skript-Abschnitt ist es, die Bevölkerungsveränderungsraten auf Gemeindeebene zu kategorisieren und deren Ablauf mittels einer Sequenzanalyse zu vergleichen.</p>
+<p>Wir berechnen zunächst erneut die jährliche Bevölkerungsveränderungsrate, diesmal für jede Gemeinde. Da die Raten auf Gemeindebene sehr stark fluktuieren können (zB. Eröffnung eines Pflegeheimes) verwenden wir einen <strong>rollenden Mittelwert</strong> als “smoothing” Technik.</p>
+<p>Die Tabelle wird nach Gemeinde und Jahr sortiert, und mit <code>rollapply()</code> wird für jede Gemeinde ein <strong>3-Jahres-Rolling Mean</strong> der Bevölkerungsraten berechnet (<code>rate_roll3</code>), wobei die Mittelwerte jeweils die aktuellen und zwei vorhergehenden Jahre umfassen (<code>align = "right"</code>). Am Ende werden noch fehlende Werte entfernt und die Daten wieder entgruppiert, sodass die rollenden Mittelwerte bereit für die Kategorisierung sind.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>seq_dta <span class="ot">&lt;-</span> dta <span class="sc">%&gt;%</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gemnr) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pop_diff =</span> pop <span class="sc">-</span> <span class="fu">lag</span>(pop),</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">pop_rate =</span> (pop_diff <span class="sc">/</span> <span class="fu">lag</span>(pop)) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(jahr, gemnr, pop_rate, bld) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attache Paket: 'zoo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Die folgenden Objekte sind maskiert von 'package:base':
+
+    as.Date, as.Date.numeric</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>seq_dta <span class="ot">&lt;-</span> seq_dta <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(gemnr, jahr) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gemnr) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rate_roll3 =</span> <span class="fu">rollapply</span>(pop_rate,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">width =</span> <span class="dv">3</span>,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">FUN =</span> mean,</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">align =</span> <span class="st">"right"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Der Code teilt die zuvor berechneten <strong>3-Jahres-Rolling Means der Bevölkerungsraten</strong> (<code>rate_roll3</code>) in <strong>vier Kategorien</strong> ein. Mit <code>ntile(..., 4)</code> werden die Werte in <strong>Quartile</strong> unterteilt, sodass jede Kategorie etwa ein Viertel der Daten enthält. Anschließend werden die numerischen Quartile in <strong>lesbare Labels</strong> umgewandelt (<code>stark negativ</code> bis <code>stark positiv</code>), sodass die Ergebnisse leichter interpretierbar und für Visualisierungen nutzbar sind.</p>
+<p>Mit <code>table(seq_dta$rate_quartile)</code> wird schließlich die <strong>Häufigkeitsverteilung der Kategorien</strong> angezeigt, sodass man schnell sehen kann, wie viele Beobachtungen in jede Gruppe fallen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(seq_dta<span class="sc">$</span>rate_roll3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-16.1922  -0.3777   0.2104   0.2639   0.8357  14.0328 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>seq_dta <span class="ot">&lt;-</span> seq_dta <span class="sc">%&gt;%</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rate_quartile =</span> <span class="fu">ntile</span>(rate_roll3, <span class="dv">4</span>),</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">rate_quartile =</span> <span class="fu">factor</span>(rate_quartile,</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"stark negativ"</span>, <span class="st">"negativ"</span>, <span class="st">"positiv"</span>, <span class="st">"stark positiv"</span>)</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>         ))</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(seq_dta<span class="sc">$</span>rate_quartile)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+stark negativ       negativ       positiv stark positiv 
+        10042         10042         10041         10041 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">&lt;-</span> seq_dta <span class="sc">%&gt;%</span> </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(gemnr, bld),</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> jahr,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> rate_quartile)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seq, typ, <span class="at">by =</span> <span class="st">"gemnr"</span>)</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>Wert[<span class="fu">is.na</span>(seq<span class="sc">$</span>Wert)] <span class="ot">&lt;-</span> <span class="st">"101"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Der folgende Code erstellt eine <strong>Sequenzanalyse</strong> für die Spalten 3 bis 21 im Datensatz <code>seq</code>, die beispielsweise jährliche Veränderungen oder Ratings abbilden. Zunächst werden die Zustände der Sequenzen definiert: <code>seq.scode</code> kodiert sie intern als <code>"HG"</code>, <code>"G"</code>, <code>"D"</code> und <code>"HD"</code>, während <code>seq.alphabet</code> und <code>seq.labels</code> für die <strong>lesbaren Bezeichnungen</strong> sorgen („stark positiv“ bis „stark negativ“). Mit <code>seqdef()</code> werden die Daten als Sequenzen vorbereitet, inklusive Farben für die Visualisierung (<code>seq.cpal1</code>), sodass jeder Zustand konsistent dargestellt wird.</p>
+<p>Anschließend erlaubt der Code eine <strong>erste Exploration der Sequenzen</strong>: <code>seqstatl()</code> zeigt die Häufigkeit der Zustände über die Zeit, <code>print()</code> und <code>summary()</code> geben Übersicht über die Sequenzen einzelner Gemeinden und deren statistische Zusammenfassung, und <code>seqlegend()</code> erzeugt eine <strong>Legende</strong>, die die Farben den Zuständen zuordnet. So können Studierende schnell sehen, wie sich Zustände über die Zeit verteilen und Muster in den Sequenzen erkennen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("TraMineR")</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TraMineR)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Website: http://traminer.unige.ch</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Please type 'citation("TraMineR")' for citation information.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqstatl</span>(seq[, <span class="dv">3</span><span class="sc">:</span><span class="dv">21</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "negativ"       "positiv"       "stark negativ" "stark positiv"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>seq.alphabet <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"stark positiv"</span>, <span class="st">"positiv"</span>, <span class="st">"negativ"</span>, <span class="st">"stark negativ"</span>)</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>seq.labels <span class="ot">&lt;-</span> seq.alphabet</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>seq.scode <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"HG"</span>, <span class="st">"G"</span>, <span class="st">"D"</span>, <span class="st">"HD"</span>)</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>seq.cpal1<span class="ot">=</span> <span class="fu">c</span>(<span class="st">"#d7191c"</span>,<span class="st">"#fec980"</span>, <span class="st">"#c7e6db"</span>, <span class="st">"#2c7bb6"</span>) </span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>seq.df <span class="ot">&lt;-</span> <span class="fu">seqdef</span> (seq, <span class="at">var=</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">21</span>, </span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">states=</span>seq.scode, </span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">labels=</span>seq.labels, </span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alphabet=</span>seq.alphabet, </span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">cpal =</span> seq.cpal1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] state coding:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>       [alphabet]    [label]  [long label] </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>     1  stark positiv HG       stark positiv</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>     2  positiv       G        positiv</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>     3  negativ       D        negativ</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>     4  stark negativ HD       stark negativ</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] 2114 sequences in the data set</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] min/max sequence length: 19/19</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(seq.df[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ], <span class="at">format=</span><span class="st">"SPS"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Sequence                                                                          
+1 (HG,19)                                                                           
+2 (HG,3)-(G,1)-(HG,3)-(G,2)-(HG,1)-(G,1)-(D,1)-(HD,1)-(D,1)-(G,1)-(HG,2)-(G,1)-(D,1)
+3 (G,3)-(HG,5)-(G,2)-(D,2)-(G,2)-(D,1)-(HD,2)-(D,1)-(HG,1)                          
+4 (HG,3)-(G,2)-(D,2)-(G,3)-(D,1)-(G,1)-(HG,3)-(G,3)-(D,1)                           
+5 (D,1)-(G,3)-(D,1)-(HG,7)-(G,1)-(D,1)-(G,2)-(HG,1)-(G,1)-(D,1)                     </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(seq.df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [&gt;] sequence object created with TraMineR version 2.2-8 
+ [&gt;] 2114 sequences in the data set, 2072 unique 
+ [&gt;] min/max sequence length: 19/19
+ [&gt;] alphabet (state labels):  
+     1=HG (stark positiv)
+     2=G (positiv)
+     3=D (negativ)
+     4=HD (stark negativ)
+ [&gt;] dimensionality of the sequence space: 57 
+ [&gt;] colors: 1=#d7191c 2=#fec980 3=#c7e6db 4=#2c7bb6 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqlegend</span>(seq.df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-31-2.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">group =</span> seq<span class="sc">$</span>Wert, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-31-3.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">group =</span> seq<span class="sc">$</span>Wert, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-31-4.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqfplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence frequency plot"</span>, <span class="at">group =</span> seq<span class="sc">$</span>Wert, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-31-5.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="berechnung-von-distanzmaßen-mit-optimal-matching" class="level3">
+<h3 class="anchored" data-anchor-id="berechnung-von-distanzmaßen-mit-optimal-matching">3.4. Berechnung von Distanzmaßen mit Optimal Matching</h3>
+<p><strong>Optimal Matching (OM)</strong> ist eine Methode der <strong>Sequenzanalyse</strong>, die die <strong>Ähnlichkeit zwischen zeitlich geordneten Ereignisfolgen</strong> misst.</p>
+<p>Konkret vergleicht OM zwei Sequenzen, indem es die <strong>minimale „Bearbeitungskosten“-Summe</strong> berechnet, die nötig ist, um die eine Sequenz in die andere zu überführen. Dabei werden drei Arten von Operationen erlaubt:</p>
+<ol type="1">
+<li><p><strong>Insertion</strong> – Einfügen eines Zustands</p></li>
+<li><p><strong>Deletion</strong> – Löschen eines Zustans</p></li>
+<li><p><strong>Substitution</strong> – Ersetzen eines Zustands durch einen anderen</p></li>
+</ol>
+<p>Jede Operation wird mit einer <strong>Kostenfunktion</strong> versehen, sodass Sequenzen, die ähnlich verlaufen, <strong>geringere Gesamtkosten</strong> haben. Die resultierende Distanzmatrix kann anschließend für <strong>Clusteranalysen</strong>, <strong>Multidimensionale Skalierung (MDS)</strong> oder <strong>Visualisierung von Sequenzmustern</strong> verwendet werden.</p>
+<p><strong>OM quantifiziert, wie „nah“ zwei zeitliche Abläufe beieinanderliegen</strong>, und erlaubt so die Analyse von typischen Mustern und Abweichungen in Sequenzdaten.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>costs <span class="ot">&lt;-</span> <span class="fu">seqcost</span>(seq.df, <span class="at">method =</span> <span class="st">"INDELSLOG"</span>)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>dist.om <span class="ot">&lt;-</span> <span class="fu">seqdist</span>(seq.df, <span class="at">method =</span> <span class="st">"OM"</span>, <span class="at">indel =</span> costs<span class="sc">$</span>indel, <span class="at">sm =</span> costs<span class="sc">$</span>sm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] 2114 sequences with 4 distinct states</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] checking 'sm' (size and triangle inequality)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] 2072 distinct  sequences </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] min/max sequence lengths: 19/19</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] computing distances using the OM metric</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] elapsed time: 3.69 secs</code></pre>
+</div>
+</div>
+</section>
+<section id="clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustering">3.5. Clustering</h3>
+<p><strong>Clustering</strong> ist ein Verfahren, bei dem Beobachtungen in Gruppen (Cluster) eingeteilt werden, sodass die Objekte <strong>innerhalb eines Clusters möglichst ähnlich</strong> und <strong>zwischen Clustern möglichst unterschiedlich</strong> sind.</p>
+<p><strong>Ward’s Methode</strong> ist eine spezielle Form des <strong>hierarchischen Clustering</strong>. Sie arbeitet nach dem Prinzip, dass in jedem Schritt die beiden Cluster zusammengeführt werden, deren <strong>Zusammenfassung die geringste Zunahme der Gesamtsumme der quadrierten Abweichungen (Within-Cluster-Variance)</strong> verursacht. Anders gesagt: Ward sucht immer die Kombination, die die <strong>homogensten Gruppen</strong> erzeugt.</p>
+<p>Tendenziell erzeugt dieser Clustering-Algorithmus <strong>ähnlich große und kompakte Cluster</strong>, was die Interpretation von Gruppenmustern erleichtert.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>wardcluster_OM <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.om), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>groups.om <span class="ot">&lt;-</span> <span class="fu">cutree</span>(wardcluster_OM, <span class="at">k =</span> k)</span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">group =</span> groups.om, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">group =</span> groups.om, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-33-2.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqfplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence frequency plot"</span>, <span class="at">group =</span> groups.om, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-33-3.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bonus-dynamic-hamming-distance" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-dynamic-hamming-distance">3.6. Bonus: Dynamic Hamming Distance</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>?seqdist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>starte den http Server für die Hilfe fertig</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>costs <span class="ot">&lt;-</span> <span class="fu">seqcost</span>(seq.df, <span class="at">method =</span> <span class="st">"INDELSLOG"</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>dist.dhd <span class="ot">&lt;-</span> <span class="fu">seqdist</span>(seq.df, <span class="at">method =</span> <span class="st">"DHD"</span>, <span class="at">indel =</span> costs<span class="sc">$</span>indel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> [&gt;] 2114 sequences with 4 distinct states
+ [&gt;] creating a 'sm' with the costs derived from the transition rates
+ [&gt;] creating time varying substitution-cost matrix using transition rates ...
+ [&gt;] computing time varying transition probabilities for states HG/G/D/HD ...
+ [&gt;] 2072 distinct  sequences 
+ [&gt;] min/max sequence lengths: 19/19
+ [&gt;] computing distances using the DHD metric
+ [&gt;] elapsed time: 1.14 secs</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>wardcluster_DHD <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.dhd), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>groups.dhd <span class="ot">&lt;-</span> <span class="fu">cutree</span>(wardcluster_DHD, <span class="at">k =</span> k)</span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a><span class="fu">seqiplot</span>(seq.df, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">group =</span> groups.dhd, <span class="at">idxs=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2114</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqdplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence distribution plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqfplot</span>(seq.df, <span class="at">main =</span> <span class="st">"Sequence frequency plot"</span>, <span class="at">group =</span> groups.dhd, <span class="at">border=</span>T) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-34-3.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.om <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.om)</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>seq<span class="sc">$</span>cluster.dhd <span class="ot">&lt;-</span> <span class="fu">factor</span>(groups.dhd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="von-den-daten-zur-karte-spatial-data-frames-visualisierung" class="level2">
+<h2 class="anchored" data-anchor-id="von-den-daten-zur-karte-spatial-data-frames-visualisierung">4. Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung</h2>
+<p>Mit dem Paket “<code>sf</code>” (“Spatial Features”) kann R auch als Geoinformationssystem verwendet werden. Das Paket “mapview” ermöglicht das einfache Erstellen von interaktiven Karten. Wir installieren beide Pakete mit <code>install.packages()</code> und laden sie mit <code>library()</code></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(c("sf", "mapview")) library(sf) library(mapview)</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.2, GDAL 3.7.2, PROJ 9.3.0; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Um Karten zu erstellen müssen wir unserem Dataframe räumliche Informationen hinzufügen. Die Statistik Austria stellt zu diesem Zweck in ihrem STATatlas die regionale Gliederung Österreichs in Form von .shp files zur Verfügung.</p>
+<p>Ein Shapefile ist ein älteres, sehr verbreitetes Dateiformat, mit dem man Kartenobjekte wie Punkte, Linien und Flächen samt ihren Daten speichert. Es besteht aus mehreren zusammengehörigen Dateien (z. B. .shp, .shx, .dbf), die gemeinsam in einem Ordner liegen müssen, und wird von den meisten GIS‑Programmen unterstützt.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>shp <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/OGDEXT_GEM_1_STATISTIK_AUSTRIA_20250101/STATISTIK_AUSTRIA_GEM_20250101.shp"</span>)  </span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shp) <span class="co"># in der Spalte geometry sind die Koordinaten (Punkte, Polygone, Linien) für jede Gemeinde in Österreich gespeichert</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 628026.2 ymin: 436909.1 xmax: 659390.5 ymax: 458158.4
+Projected CRS: MGI / Austria Lambert
+# A tibble: 6 × 3
+  g_id  g_name                                                          geometry
+  &lt;chr&gt; &lt;chr&gt;                                                 &lt;MULTIPOLYGON [m]&gt;
+1 10101 Eisenstadt                     (((637377.1 439927.1, 637314.8 439990.3,…
+2 10201 Rust                           (((649519.4 441308.4, 649519.1 441303.2,…
+3 10301 Breitenbrunn am Neusiedler See (((651390.8 458137, 651422.4 458098.8, 6…
+4 10302 Donnerskirchen                 (((657709.2 448462, 657306.5 448432.9, 6…
+5 10303 Großhöflein                    (((635649.5 445523.9, 635660.6 445491.5,…
+6 10304 Hornstein                      (((634388.3 450387.4, 634474.4 450373.2,…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>shp<span class="sc">$</span>g_id <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(shp<span class="sc">$</span>g_id)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seq, shp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gemnr"</span> <span class="ot">=</span> <span class="st">"g_id"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recoding map$Wert into map$typ</span></span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>typ <span class="ot">&lt;-</span> map<span class="sc">$</span>Wert <span class="sc">%&gt;%</span></span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(</span>
+<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"101"</span>,</span>
+<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"102"</span>,</span>
+<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"103"</span>,</span>
+<span id="cb122-10"><a href="#cb122-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"210"</span>,</span>
+<span id="cb122-11"><a href="#cb122-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"220"</span>,</span>
+<span id="cb122-12"><a href="#cb122-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"310"</span>,</span>
+<span id="cb122-13"><a href="#cb122-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"320"</span>,</span>
+<span id="cb122-14"><a href="#cb122-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"330"</span>,</span>
+<span id="cb122-15"><a href="#cb122-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"410"</span>,</span>
+<span id="cb122-16"><a href="#cb122-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"420"</span>,</span>
+<span id="cb122-17"><a href="#cb122-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"430"</span></span>
+<span id="cb122-18"><a href="#cb122-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb122-19"><a href="#cb122-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-20"><a href="#cb122-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb122-21"><a href="#cb122-21" aria-hidden="true" tabindex="-1"></a>map_cluster <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb122-22"><a href="#cb122-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cluster.dhd))<span class="sc">+</span></span>
+<span id="cb122-23"><a href="#cb122-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)<span class="sc">+</span></span>
+<span id="cb122-24"><a href="#cb122-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb122-25"><a href="#cb122-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-26"><a href="#cb122-26" aria-hidden="true" tabindex="-1"></a>map_typ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb122-27"><a href="#cb122-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> typ), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb122-28"><a href="#cb122-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb122-29"><a href="#cb122-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb122-30"><a href="#cb122-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"#b35e6b"</span>,</span>
+<span id="cb122-31"><a href="#cb122-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"#d67169"</span>,</span>
+<span id="cb122-32"><a href="#cb122-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"#e08f81"</span>,</span>
+<span id="cb122-33"><a href="#cb122-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#eeaf58"</span>,</span>
+<span id="cb122-34"><a href="#cb122-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#f5ca82"</span>,</span>
+<span id="cb122-35"><a href="#cb122-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#fdf453"</span>,</span>
+<span id="cb122-36"><a href="#cb122-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#fefabb"</span>,</span>
+<span id="cb122-37"><a href="#cb122-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"#eeec85"</span>,</span>
+<span id="cb122-38"><a href="#cb122-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"#c2d38c"</span>,</span>
+<span id="cb122-39"><a href="#cb122-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"#84b870"</span>,</span>
+<span id="cb122-40"><a href="#cb122-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"#789d6e"</span></span>
+<span id="cb122-41"><a href="#cb122-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb122-42"><a href="#cb122-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb122-43"><a href="#cb122-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb122-44"><a href="#cb122-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-45"><a href="#cb122-45" aria-hidden="true" tabindex="-1"></a>map_typ <span class="sc">/</span> map_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_basics_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "cluster.dhd")</span></span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "Wert")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
