@@ -5,8 +5,8 @@ project:
 website:
   title: "Quantitative Geographie: Mobile Gesellschaft"
   sidebar:
-  style: docked
-  search: true
+    style: docked
+    search: true
     contents:
       - href: index.qmd
         text: Intro
@@ -14,14 +14,12 @@ website:
       - 02_data_manipulation.qmd
       - 03_sequenzanalyse.qmd
       - 04_mapping.qmd
-      
+
 format:
   html:
     theme:
-      - sandstone
-      - brand
+      - cosmo
     css: styles.css
     toc: true
-
 
 
