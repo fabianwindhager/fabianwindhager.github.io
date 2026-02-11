@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Skript – Quantitative Geographie: Mobile Gesellschaft</title>
+<title>Skript 1 – Quantitative Geographie: Mobile Gesellschaft</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,7 +162,11 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./01_basics.html" aria-current="page"> 
-<span class="menu-text">Skript</span></a>
+<span class="menu-text">Skript 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./02_data_manipulation.html"> 
+<span class="menu-text">Skript 2</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -193,7 +197,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" id="toc-bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten" class="nav-link" data-scroll-target="#bevölkerungsdaten-importieren-berechnungen-durchführen-und-plotten">2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#the-pipe-operator" id="toc-the-pipe-operator" class="nav-link" data-scroll-target="#the-pipe-operator">2.1. The pipe operator %&gt;%</a></li>
   <li><a href="#filter-select" id="toc-filter-select" class="nav-link" data-scroll-target="#filter-select">2.2. Filter &amp; Select</a></li>
   <li><a href="#mutate" id="toc-mutate" class="nav-link" data-scroll-target="#mutate">2.3. Mutate</a></li>
@@ -221,7 +224,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Skript</h1>
+<h1 class="title">Skript 1</h1>
 </div>
 
 
@@ -413,9 +416,6 @@ window.Quarto = {
 <pre><code>[1] "gemnr"  "jahr"   "bi_zu"  "bi_weg" "au_zu"  "au_weg"</code></pre>
 </div>
 </div>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
-</section>
 <section id="the-pipe-operator" class="level3">
 <h3 class="anchored" data-anchor-id="the-pipe-operator">2.1. The pipe operator %&gt;%</h3>
 <p>Der Pipe-Operator <code>%&gt;%</code> (<code>Strg + Umschalt + M</code>) übergibt das Ergebnis einer Funktion an die nächste.</p>
@@ -1063,7 +1063,7 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 <pre><code> [&gt;] computing distances using the OM metric</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] elapsed time: 3.03 secs</code></pre>
+<pre><code> [&gt;] elapsed time: 5.26 secs</code></pre>
 </div>
 </div>
 </section>
@@ -1130,7 +1130,7 @@ TraMineR stable version 2.2-8 (Built: 2023-11-21)</code></pre>
 <pre><code> [&gt;] computing distances using the DHD metric</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] elapsed time: 0.18 secs</code></pre>
+<pre><code> [&gt;] elapsed time: 0.23 secs</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>wardcluster_DHD <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.dhd), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
 <span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>

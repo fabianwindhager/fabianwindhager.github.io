@@ -3,6 +3,10 @@ title: "Skript 2"
 editor: visual
 ---
 
+```{r}
+library(tidyverse)
+```
+
 ## 2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten
 
 Im Kurs "Quantitative Geographien" arbeiten wir mit `.csv` und `.shp` files.
