@@ -1,6 +1,5 @@
 ---
 title: "Skript 3 - Sequenzanalyse"
-editor: visual
 ---
 
 ```{r}

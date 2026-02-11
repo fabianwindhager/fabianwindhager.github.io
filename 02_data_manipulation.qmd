@@ -1,6 +1,5 @@
 ---
 title: "Skript 2 - Daten import, manipulation & plotten"
-editor: visual
 ---
 
 ### 2.1. Daten importieren
