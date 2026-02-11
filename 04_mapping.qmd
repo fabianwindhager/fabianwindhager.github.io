@@ -82,5 +82,5 @@ map_typ / map_cluster
 ```
 
 ```{r}
-mapview(map, zcol = "cluster.dhd")
+#mapview(map, zcol = "cluster.dhd")
 ```
