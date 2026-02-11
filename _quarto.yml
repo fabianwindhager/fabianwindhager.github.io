@@ -21,6 +21,7 @@ format:
       - zephyr
       - brand
     css: styles.css
+    logo: images/logo.jpg
     toc: true
 
 
