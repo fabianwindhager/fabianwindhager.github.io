@@ -32,7 +32,6 @@ shp$g_id <- as.integer(shp$g_id)
 map <- left_join(seq, shp, by = c("gemnr" = "g_id")) %>% 
   st_as_sf()
 
-glimpse(map)
 map$Wert <- as.factor(map$Wert)
 map$cluster.dhd <- as.factor(map$cluster.dhd)
 
