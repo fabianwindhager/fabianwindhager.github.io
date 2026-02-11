@@ -9,6 +9,7 @@ website:
       - href: index.qmd
         text: Intro
       - 01_basics.qmd
+      - 02_data_manipulation.qmd
       
 format:
   html:

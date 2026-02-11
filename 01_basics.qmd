@@ -1,5 +1,5 @@
 ---
-title: "Skript"
+title: "Skript 1"
 editor: visual
 ---
 
@@ -126,8 +126,6 @@ head(moves)
 str(moves) 
 names(moves)
 ```
-
-### 
 
 ### 2.1. The pipe operator %\>%
 
