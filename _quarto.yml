@@ -4,8 +4,10 @@ project:
 
 website:
   title: "Quantitative Geographie: Mobile Gesellschaft"
-  navbar:
-    left:
+  sidebar:
+  style: docked
+  search: true
+    contents:
       - href: index.qmd
         text: Intro
       - 01_basics.qmd
