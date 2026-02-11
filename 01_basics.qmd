@@ -1,9 +1,7 @@
 ---
-title: "Skript 1"
+title: "Skript 1 - R/RStudio Basics"
 editor: visual
 ---
-
-## 1. R/RStudio Basics
 
 ### 1.1. Was ist R?
 

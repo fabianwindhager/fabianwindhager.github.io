@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Quantitative Geographie – Quantitative Geographie: Mobile Gesellschaft</title>
+<title>Skript 4 - Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung – Quantitative Geographie: Mobile Gesellschaft</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -93,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Intro</span></a>
   </li>  
   <li class="nav-item">
@@ -123,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quantitative Geographie</h1>
+<h1 class="title">Skript 4 - Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung</h1>
 </div>
 
 
@@ -140,7 +175,147 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Willkommen zum Kurs “Quantitative Geographie”.</p>
+<p>Mit dem Paket “<code>sf</code>” (“Spatial Features”) kann R auch als Geoinformationssystem verwendet werden. Das Paket “mapview” ermöglicht das einfache Erstellen von interaktiven Karten. Wir installieren beide Pakete mit <code>install.packages()</code> und laden sie mit <code>library()</code></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(c("sf", "mapview")) </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.2, GDAL 3.7.2, PROJ 9.3.0; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview) </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   4.0.0     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/Sequenzdaten.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Um Karten zu erstellen müssen wir unserem Dataframe räumliche Informationen hinzufügen. Die Statistik Austria stellt zu diesem Zweck in ihrem STATatlas die regionale Gliederung Österreichs in Form von .shp files zur Verfügung.</p>
+<p>Ein Shapefile ist ein älteres, sehr verbreitetes Dateiformat, mit dem man Kartenobjekte wie Punkte, Linien und Flächen samt ihren Daten speichert. Es besteht aus mehreren zusammengehörigen Dateien (z. B. .shp, .shx, .dbf), die gemeinsam in einem Ordner liegen müssen, und wird von den meisten GIS‑Programmen unterstützt.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shp <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/OGDEXT_GEM_1_STATISTIK_AUSTRIA_20250101/STATISTIK_AUSTRIA_GEM_20250101.shp"</span>)   </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shp) <span class="co"># in der Spalte geometry sind die Koordinaten (Punkte, Polygone, Linien) für jede Gemeinde in Österreich gespeichert</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 628026.2 ymin: 436909.1 xmax: 659390.5 ymax: 458158.4
+Projected CRS: MGI / Austria Lambert
+# A tibble: 6 × 3
+  g_id  g_name                                                          geometry
+  &lt;chr&gt; &lt;chr&gt;                                                 &lt;MULTIPOLYGON [m]&gt;
+1 10101 Eisenstadt                     (((637377.1 439927.1, 637314.8 439990.3,…
+2 10201 Rust                           (((649519.4 441308.4, 649519.1 441303.2,…
+3 10301 Breitenbrunn am Neusiedler See (((651390.8 458137, 651422.4 458098.8, 6…
+4 10302 Donnerskirchen                 (((657709.2 448462, 657306.5 448432.9, 6…
+5 10303 Großhöflein                    (((635649.5 445523.9, 635660.6 445491.5,…
+6 10304 Hornstein                      (((634388.3 450387.4, 634474.4 450373.2,…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>shp<span class="sc">$</span>g_id <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(shp<span class="sc">$</span>g_id)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seq, shp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gemnr"</span> <span class="ot">=</span> <span class="st">"g_id"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(map)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,114
+Columns: 27
+$ gemnr       &lt;int&gt; 10101, 10201, 10301, 10302, 10303, 10304, 10305, 10306, 10…
+$ bld         &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ X2005       &lt;chr&gt; "stark positiv", "stark positiv", "positiv", "stark positi…
+$ X2006       &lt;chr&gt; "stark positiv", "stark positiv", "positiv", "stark positi…
+$ X2007       &lt;chr&gt; "stark positiv", "stark positiv", "positiv", "stark positi…
+$ X2008       &lt;chr&gt; "stark positiv", "positiv", "stark positiv", "positiv", "p…
+$ X2009       &lt;chr&gt; "stark positiv", "stark positiv", "stark positiv", "positi…
+$ X2010       &lt;chr&gt; "stark positiv", "stark positiv", "stark positiv", "negati…
+$ X2011       &lt;chr&gt; "stark positiv", "stark positiv", "stark positiv", "negati…
+$ X2012       &lt;chr&gt; "stark positiv", "positiv", "stark positiv", "positiv", "s…
+$ X2013       &lt;chr&gt; "stark positiv", "positiv", "positiv", "positiv", "stark p…
+$ X2014       &lt;chr&gt; "stark positiv", "stark positiv", "positiv", "positiv", "s…
+$ X2015       &lt;chr&gt; "stark positiv", "positiv", "negativ", "negativ", "stark p…
+$ X2016       &lt;chr&gt; "stark positiv", "negativ", "negativ", "positiv", "stark p…
+$ X2017       &lt;chr&gt; "stark positiv", "stark negativ", "positiv", "stark positi…
+$ X2018       &lt;chr&gt; "stark positiv", "negativ", "positiv", "stark positiv", "n…
+$ X2019       &lt;chr&gt; "stark positiv", "positiv", "negativ", "stark positiv", "p…
+$ X2020       &lt;chr&gt; "stark positiv", "stark positiv", "stark negativ", "positi…
+$ X2021       &lt;chr&gt; "stark positiv", "stark positiv", "stark negativ", "positi…
+$ X2022       &lt;chr&gt; "stark positiv", "positiv", "negativ", "positiv", "positiv…
+$ X2023       &lt;chr&gt; "stark positiv", "negativ", "stark positiv", "negativ", "n…
+$ Name        &lt;chr&gt; "Eisenstadt", "Rust", "Breitenbrunn am Neusiedler See", "D…
+$ Wert        &lt;int&gt; 103, 410, 310, 310, 103, 310, 410, 310, 410, 103, 310, 410…
+$ cluster.om  &lt;int&gt; 1, 2, 2, 2, 2, 1, 3, 2, 4, 4, 1, 5, 3, 4, 5, 4, 1, 1, 1, 1…
+$ cluster.dhd &lt;int&gt; 1, 1, 2, 3, 3, 1, 2, 2, 4, 2, 1, 2, 2, 3, 5, 2, 1, 1, 3, 1…
+$ g_name      &lt;chr&gt; "Eisenstadt", "Rust", "Breitenbrunn am Neusiedler See", "D…
+$ geometry    &lt;MULTIPOLYGON [m]&gt; MULTIPOLYGON (((637377.1 43..., MULTIPOLYGON …</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>Wert <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(map<span class="sc">$</span>Wert)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>cluster.dhd <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(map<span class="sc">$</span>cluster.dhd)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recoding map$Wert into map$typ</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>map<span class="sc">$</span>typ <span class="ot">&lt;-</span> map<span class="sc">$</span>Wert <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"101"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"102"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"103"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"210"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"220"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"310"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"320"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"330"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"410"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"420"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"430"</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>map_cluster <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cluster.dhd))<span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)<span class="sc">+</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>map_typ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> map) <span class="sc">+</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> typ), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Großzentren"</span> <span class="ot">=</span> <span class="st">"#b35e6b"</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Mittelzentren"</span> <span class="ot">=</span> <span class="st">"#d67169"</span>,</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Urbane Kleinzentren"</span> <span class="ot">=</span> <span class="st">"#e08f81"</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#eeaf58"</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Regionale Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#f5ca82"</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, zentral"</span> <span class="ot">=</span> <span class="st">"#fdf453"</span>,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, intermediär"</span> <span class="ot">=</span> <span class="st">"#fefabb"</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum im Umland von Zentren, peripher"</span> <span class="ot">=</span> <span class="st">"#eeec85"</span>,</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, zentral"</span> <span class="ot">=</span> <span class="st">"#c2d38c"</span>,</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, intermediär"</span> <span class="ot">=</span> <span class="st">"#84b870"</span>,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Ländlicher Raum, peripher"</span> <span class="ot">=</span> <span class="st">"#789d6e"</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>map_typ <span class="sc">/</span> map_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="04_mapping_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "cluster.dhd")</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mapview(map, zcol = "Wert")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 
 
 

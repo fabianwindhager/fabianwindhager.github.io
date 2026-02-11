@@ -1,13 +1,13 @@
 ---
-title: "Skript 2"
+title: "Skript 2 - Bevölkerungsdaten importieren, Berechnungen durchführen und plotten"
 editor: visual
 ---
 
 ```{r}
+#| message: false
+#| warning: false
 library(tidyverse)
 ```
-
-## 2. Bevölkerungsdaten importieren, Berechnungen durchführen und plotten
 
 Im Kurs "Quantitative Geographien" arbeiten wir mit `.csv` und `.shp` files.
 
@@ -106,6 +106,8 @@ dta <- dta %>%
 
 # Wir ersetzen NAs mit 0 (Manche Gemeinden erfahren keine Zu- oder Abwanderung in einzelnen Jahren)
 dta[is.na(dta)] <- 0
+
+write.csv(dta, "data/Gemeindedaten.csv", row.names = FALSE)
 ```
 
 Nun haben wir einen Datensatz mit dem wir weitere Berechnungen anstellen können!
@@ -381,9 +383,7 @@ Die Urban-Rural-Typologie der Statistik Austria ist eine räumliche Klassifikati
 Die Urban-Rural Typologie der Statistik Austria kann im STATAtlas heruntergeladen werden: [https://www.statistik.at/atlas/?mapid=topo_regionale_gliederung_oesterreich](#0)
 
 ```{r}
-typ <- read.csv2("C:/Users/fwindhager/001_PROJECTS/008_Seminar_Quantgeo_Innsbruck/001_DATA/001_RAW_DATA/003_gliederungen_nach_städtischen_und_ländlichen_gebieten(1).csv")
+typ <- read.csv2("data/003_gliederungen_nach_städtischen_und_ländlichen_gebieten(1).csv")
 
 head(typ)
 ```
-
-## 
