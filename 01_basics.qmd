@@ -48,7 +48,7 @@ my_ages + 2
 
 R muss wissen, um welche Art von Daten es sich handelt. Mathematische Berechnungen mit einem Wort führen zu einem Error.
 
-![](images/Screenshot 2026-02-02 110217.png)
+![](images/Screenshot%202026-02-02%20110217.png)
 
 ```{r}
 class(my_ages) 
@@ -60,7 +60,7 @@ class(my_names)
 
 Dies ist die" Excel-Tabelle" von R. Ein Datenrahmen ist zweidimensional: Zeilen (Beobachtungen) und Spalten (Variablen). Hier finden 99 % der Datenanalysen statt.
 
-![](images/Screenshot 2026-02-02 111438.png)
+![](images/Screenshot%202026-02-02%20111438.png)
 
 ```{r}
 df <- data.frame(id = c(1,2,3,4,5),   
