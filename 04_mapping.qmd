@@ -1,11 +1,12 @@
 ---
-title: "Skript 4 - Von den Daten zur Karte: Spatial Data Frames & Visualisierung"
+title: "Skript 4 - Spatial Data Frames & Mapping"
 editor: visual
 ---
 
 Mit dem Paket "`sf`" ("Spatial Features") kann R auch als Geoinformationssystem verwendet werden. Das Paket "mapview" ermöglicht das einfache Erstellen von interaktiven Karten. Wir installieren beide Pakete mit `install.packages()` und laden sie mit `library()`
 
 ```{r}
+#| include: false
 #install.packages(c("sf", "mapview")) 
 library(sf) 
 library(mapview) 

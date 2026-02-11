@@ -3,7 +3,10 @@ title: "Skript 2 - Daten import, manipulation & plotten"
 editor: visual
 ---
 
+### 2.1. Daten importieren
+
 ```{r}
+#| include: false
 #| message: false
 #| warning: false
 library(tidyverse)
@@ -33,7 +36,7 @@ str(moves)
 names(moves)
 ```
 
-### 2.1. The pipe operator %\>%
+### 2.2. The pipe operator %\>%
 
 Der Pipe-Operator `%>%` (`Strg + Umschalt + M`) übergibt das Ergebnis einer Funktion an die nächste.
 
@@ -46,7 +49,7 @@ pop %>%
 
 Die Pipe kann man lesen als „UND DANN“. Daten nehmen, UND DANN filtern, UND DANN Bevölkerungszahlen ziehen, UND DANN Mittelwert nehmen.
 
-### 2.2. Filter & Select
+### 2.3. Filter & Select
 
 Die Datenbereinigung macht 80 % der Arbeit aus. `dplyr` bietet fünf wichtige Funktionen. Die ersten beiden reduzieren die Datengröße.
 
@@ -69,7 +72,7 @@ kennz <- pop_2002 %>%
 head(kennz)
 ```
 
-### 2.3. Mutate
+### 2.4. Mutate
 
 Oftmals müssen Sie aus alten Daten neue Daten erstellen. In unserem Fall möchten wir beispielsweise Migrationssalden berechnen. `mutate()` fügt dem Dataframe eine neue Spalte mit der gewünschten Berechnung hinzu.
 
@@ -81,7 +84,7 @@ moves <- moves %>%
          au_saldo = au_zu - au_weg)
 ```
 
-### 2.4. Joins
+### 2.5. Joins
 
 Da wir in sowohl in "`moves`" als auch in "`pop`" die gleichen Gemeindekennziffern haben, können wir die beiden dataframes vereinigen (oder "joinen"). Zuvor müssen wir allerdings die Jahre 2024 und 2025 aus dem "pop" datensatz entfernen.
 
@@ -112,7 +115,7 @@ write.csv(dta, "data/Gemeindedaten.csv", row.names = FALSE)
 
 Nun haben wir einen Datensatz mit dem wir weitere Berechnungen anstellen können!
 
-### 2.5. Group By & Summarize
+### 2.6. Group By & Summarize
 
 `group_by()` teilt die Daten in Gruppen nach einer oder mehreren Variablen, und `summarize()` berechnet dann zusammenfassende Kennzahlen (wie Summe oder Mittelwert) für jede Gruppe.
 
@@ -188,7 +191,7 @@ bld_dta <- bld_dta %>%
   ungroup()
 ```
 
-### 2.6. The Grammar of Graphics
+### 2.7. The Grammar of Graphics
 
 `ggplot2` basiert auf Ebenen. Man erstellt nicht einfach „ein Diagramm“, sondern baut es Schicht für Schicht auf, wie einen Kuchen. Die wesentlichsten Funktionen von ggplot finden sich unter
 
@@ -262,7 +265,7 @@ ggplot(data = pop_tirol, aes(x = jahr, y = mig_saldo))+
   labs(x = " ", y = "Gesamtmigrationssaldo", title = "Gesamtmigrationssaldo Tirol, 2002-2023")
 ```
 
-### 2.7. Tidy-Data
+### 2.8. Tidy-Data
 
 Das **Long-Format** (oder "Tidy Data") ist ein Datenformat, bei dem jede Variable eine Spalte, jede Beobachtung eine Zeile und jede Einheit eine Tabelle bildet, sodass Daten klar strukturiert und einfach analysierbar sind.
 
@@ -376,7 +379,7 @@ ggplot(data = rates_all %>% filter(variable != "mig_rate"),
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-### 2.8. Raumtypologien
+### 2.9. Raumtypologien
 
 Die Urban-Rural-Typologie der Statistik Austria ist eine räumliche Klassifikation, die Gemeinden bzw. Regionen anhand von Kriterien wie Bevölkerungsdichte, strukturellen Merkmalen und Erreichbarkeit in städtische, intermediäre und ländliche Raumtypen einteilt, um statistische Analysen zu ermöglichen.
 

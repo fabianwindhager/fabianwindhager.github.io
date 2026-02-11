@@ -4,6 +4,7 @@ editor: visual
 ---
 
 ```{r}
+#| include: false
 #| message: false
 #| warning: false
 library(tidyverse)
