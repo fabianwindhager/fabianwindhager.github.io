@@ -13,7 +13,6 @@ website:
       - 01_basics.qmd
       - 02_data_manipulation.qmd
       - 03_sequenzanalyse.qmd
-      - 04_mapping.qmd
 
 format:
   html:
