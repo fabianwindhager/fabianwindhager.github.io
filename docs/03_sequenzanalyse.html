@@ -139,6 +139,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./02_data_manipulation.html"> 
 <span class="menu-text">Skript 2 - Bevölkerungsdaten importieren, Berechnungen durchführen und plotten</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./03_sequenzanalyse.html" aria-current="page"> 
+<span class="menu-text">Skript 3 - Sequenzanalyse</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./04_mapping.html"> 
+<span class="menu-text">Skript 4 - Von den Daten zur Karte: Spatial Data Frames &amp; Visualisierung</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -415,7 +423,7 @@ stark negativ       negativ       positiv stark positiv
 <pre><code> [&gt;] computing distances using the OM metric</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] elapsed time: 4.81 secs</code></pre>
+<pre><code> [&gt;] elapsed time: 3.06 secs</code></pre>
 </div>
 </div>
 </section>
@@ -482,7 +490,7 @@ stark negativ       negativ       positiv stark positiv
 <pre><code> [&gt;] computing distances using the DHD metric</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code> [&gt;] elapsed time: 0.25 secs</code></pre>
+<pre><code> [&gt;] elapsed time: 0.17 secs</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>wardcluster_DHD <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist.dhd), <span class="at">method =</span> <span class="st">"ward.D"</span>)</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
