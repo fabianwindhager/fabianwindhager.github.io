@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>converting-from-bfg-repo-cleaner – Quantitative Geographie: Mobile Gesellschaft</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a689babd61779e5d778a0244ec54c99c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../01_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skript 1 - R/RStudio Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../02_data_manipulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skript 2 - Daten import, manipulation &amp; plotten</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../03_sequenzanalyse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skript 3 - Sequenzanalyse</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cheat-sheet-converting-from-bfg-repo-cleaner" id="toc-cheat-sheet-converting-from-bfg-repo-cleaner" class="nav-link active" data-scroll-target="#cheat-sheet-converting-from-bfg-repo-cleaner">Cheat Sheet: Converting from BFG Repo Cleaner</a>
+  <ul class="collapse">
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of Contents</a></li>
+  <li><a href="#half-hearted-conversions" id="toc-half-hearted-conversions" class="nav-link" data-scroll-target="#half-hearted-conversions">Half-hearted conversions</a></li>
+  <li><a href="#intention-of-equivalent-commands" id="toc-intention-of-equivalent-commands" class="nav-link" data-scroll-target="#intention-of-equivalent-commands">Intention of “equivalent” commands</a></li>
+  <li><a href="#basic-differences" id="toc-basic-differences" class="nav-link" data-scroll-target="#basic-differences">Basic Differences</a></li>
+  <li><a href="#cheat-sheet-conversion-of-examples-from-bfg" id="toc-cheat-sheet-conversion-of-examples-from-bfg" class="nav-link" data-scroll-target="#cheat-sheet-conversion-of-examples-from-bfg">Cheat Sheet: Conversion of Examples from BFG</a>
+  <ul class="collapse">
+  <li><a href="#stripping-big-blobs" id="toc-stripping-big-blobs" class="nav-link" data-scroll-target="#stripping-big-blobs">Stripping big blobs</a></li>
+  <li><a href="#deleting-files" id="toc-deleting-files" class="nav-link" data-scroll-target="#deleting-files">Deleting files</a></li>
+  <li><a href="#removing-sensitive-content" id="toc-removing-sensitive-content" class="nav-link" data-scroll-target="#removing-sensitive-content">Removing sensitive content</a></li>
+  <li><a href="#removing-files-and-folders-with-a-certain-name" id="toc-removing-files-and-folders-with-a-certain-name" class="nav-link" data-scroll-target="#removing-files-and-folders-with-a-certain-name">Removing files and folders with a certain name</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="cheat-sheet-converting-from-bfg-repo-cleaner" class="level1">
+<h1>Cheat Sheet: Converting from BFG Repo Cleaner</h1>
+<p>This document is aimed at folks who are familiar with BFG Repo Cleaner and want to learn how to convert over to using filter-repo.</p>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#half-hearted-conversions">Half-hearted conversions</a></li>
+<li><a href="#intention-of-equivalent-commands">Intention of “equivalent” commands</a></li>
+<li><a href="#basic-differences">Basic Differences</a></li>
+<li><a href="#cheat-sheet-conversion-of-examples-from-bfg">Cheat Sheet: Conversion of Examples from BFG</a></li>
+</ul>
+</section>
+<section id="half-hearted-conversions" class="level2">
+<h2 class="anchored" data-anchor-id="half-hearted-conversions">Half-hearted conversions</h2>
+<p>You can switch most any BFG command to use filter-repo under the covers by just replacing the <code>java -jar bfg.jar</code> part of the command with <a href="../contrib/filter-repo-demos/bfg-ish"><code>bfg-ish</code></a>.</p>
+<p>bfg-ish is a reasonable tool, and provides a number of bug fixes and features on top of bfg, but most of my focus is naturally on filter-repo which has a number of capabilities lacking in bfg-ish.</p>
+</section>
+<section id="intention-of-equivalent-commands" class="level2">
+<h2 class="anchored" data-anchor-id="intention-of-equivalent-commands">Intention of “equivalent” commands</h2>
+<p>BFG and filter-repo have a few differences, highlighted in the Basic Differences section below, that make it hard to get commands that behave identically. Rather than focusing on matching BFG output as exactly as possible, I treat the BFG examples as idiomatic ways to solve a certain type of problem with BFG, and express how one would idiomatically solve the same problem in filter-repo. Sometimes that means the results are not identical, but they are largely the same in each case.</p>
+</section>
+<section id="basic-differences" class="level2">
+<h2 class="anchored" data-anchor-id="basic-differences">Basic Differences</h2>
+<p>BFG operates directly on tree objects, which have no notion of their leading path. Thus, it has no way of differentiating between ‘README.md’ at the toplevel versus in some subdirectory. You simply operate on the basename of files and directories. This precludes doing things like renaming files and directories or other bigger restructures. By directly operating on trees, it also runs into problems with loose vs.&nbsp;packed objects, loose vs.&nbsp;packed refs, not understanding replace refs or grafts, and not understanding the index and working tree as another data source.</p>
+<p>With <code>git filter-repo</code>, you are essentially given an editing tool to operate on the <a href="https://git-scm.com/docs/git-fast-export">fast-export</a> serialization of a repo, which operates on filenames including their full paths from the toplevel of the repo. Directories are not separately specified, so any directory-related filtering is done by checking the leading path of each file. Further, you aren’t limited to the pre-defined filtering types, python callbacks which operate on the data structures from the fast-export stream can be provided to do just about anything you want. By leveraging fast-export and fast-import, filter-repo gains automatic handling of objects and refs whether they are packed or not, automatic handling of replace refs and grafts, and future features that may appear. It also tries hard to provide a full rewrite solution, so it takes care of additional important concerns such as updating the index and working tree and running an automatic gc for the user afterwards.</p>
+<p>The “protection” and “privacy” defaults in BFG are something I fundamentally disagreed with for a variety of reasons; see the comments at the top of the <a href="../contrib/filter-repo-demos/bfg-ish">bfg-ish</a> script if you want details. The bfg-ish script implemented these protection and privacy options since it was designed to act like BFG, but still flipped the default to the opposite of what BFG chose. I left the “protection” and “non-private” features out of filter-repo entirely. This means a number of things with filter-repo: * any filters you specify will also be applied to HEAD, so that you don’t have a weird disconnect from your history transformations only being applied to most commits * <code>[formerly OLDHASH]</code> references are not munged into commit messages; the replace refs that filter-repo adds are a much cleaner way of looking up commits by old commit hashes. * <code>Former-commit-id:</code> footers are not added to commit messages; the replace refs that filter-repo adds are a much cleaner way of looking up commits by old commit hashes. * History is not littered with <code>&lt;filename&gt;.REMOVED.git-id</code> files.</p>
+<p>BFG expects you to specify the repository to rewrite as its final argument, whereas filter-repo expects you to cd into the repo and then run filter-repo.</p>
+</section>
+<section id="cheat-sheet-conversion-of-examples-from-bfg" class="level2">
+<h2 class="anchored" data-anchor-id="cheat-sheet-conversion-of-examples-from-bfg">Cheat Sheet: Conversion of Examples from BFG</h2>
+<section id="stripping-big-blobs" class="level3">
+<h3 class="anchored" data-anchor-id="stripping-big-blobs">Stripping big blobs</h3>
+<pre class="shell"><code>  java -jar bfg.jar --strip-blobs-bigger-than 100M some-big-repo.git</code></pre>
+<p>becomes</p>
+<pre class="shell"><code>  git filter-repo --strip-blobs-bigger-than 100M</code></pre>
+</section>
+<section id="deleting-files" class="level3">
+<h3 class="anchored" data-anchor-id="deleting-files">Deleting files</h3>
+<pre class="shell"><code>  java -jar bfg.jar --delete-files id_{dsa,rsa}  my-repo.git</code></pre>
+<p>becomes</p>
+<pre class="shell"><code>  git filter-repo --use-base-name --path id_dsa --path id_rsa --invert-paths</code></pre>
+</section>
+<section id="removing-sensitive-content" class="level3">
+<h3 class="anchored" data-anchor-id="removing-sensitive-content">Removing sensitive content</h3>
+<pre class="shell"><code>  java -jar bfg.jar --replace-text passwords.txt my-repo.git</code></pre>
+<p>becomes</p>
+<pre class="shell"><code>  git filter-repo --replace-text passwords.txt</code></pre>
+<p>The <code>--replace-text</code> was a really clever idea that the BFG came up with and I just implemented mostly as-is within filter-repo. Sadly, BFG didn’t document the format of files passed to –replace text very well, but I added more detail in the filter-repo documentation.</p>
+<p>There is one small but important difference between the two tools: if you use both “regex:” and “==&gt;” on a single line to specify a regex search and replace, then filter-repo will use “\1”, “\2”, “\3”, etc. for replacement strings whereas BFG used “$1”, “$2”, “$3”, etc. The reason for this difference is simply that python used backslashes in its regex format while scala used dollar signs, and both tools wanted to just pass along the strings unmodified to the underlying language. (Since bfg-ish attempts to emulate the BFG, it accepts “$1”, “$2” and so forth and translates them to “\1”, “\2”, etc. so that filter-repo/python will understand it.)</p>
+</section>
+<section id="removing-files-and-folders-with-a-certain-name" class="level3">
+<h3 class="anchored" data-anchor-id="removing-files-and-folders-with-a-certain-name">Removing files and folders with a certain name</h3>
+<pre class="shell"><code>  java -jar bfg.jar --delete-folders .git --delete-files .git --no-blob-protection  my-repo.git</code></pre>
+<p>becomes</p>
+<pre class="shell"><code>  git filter-repo --invert-paths --path-glob '*/.git' --path .git</code></pre>
+<p>Yes, that glob will handle .git directories one or more directories deep; it’s a git-style glob rather than a shell-style glob. Also, the <code>--path .git</code> was added because <code>--path-glob '*/.git'</code> won’t match a directory named .git in the toplevel directory since it has a ‘/’ character in the glob expression (though I would hope the repository doesn’t have a tracked .git toplevel directory in its history).</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
